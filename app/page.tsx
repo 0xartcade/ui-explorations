@@ -16,7 +16,7 @@ export default function Home() {
           priority
         />
         <p className="text-white text-center max-w-md">
-          Welcome to the 0xArtcade App Preview. You can use this template to prototype and preview your game in mobile environment. This screen will disapear and your app will become full-screen when adding to the home screen on iOS and Android
+          Welcome to the 0xArtcade Game Sandbox. You can use this sandbox to prototype and preview your game in mobile environment. This screen will disapear and your app will become full-screen when adding to the home screen on iOS and Android
         </p>
       </aside>
       <section 
@@ -28,13 +28,13 @@ export default function Home() {
           <div className="hidden md:block">
             <GameArea>
               <div className="flex items-center justify-center h-full">
-                <p className="text-white">Mobile App Preview</p>
+                <p className="text-white">0xArtcade Game Sandbox - Desktop Emulator</p>
               </div>
             </GameArea>
           </div>
           {/* Mobile view (full screen) */}
           <div className="md:hidden h-full w-full bg-gray-800 flex items-center justify-center">
-            <p className="text-white">Mobile App Preview</p>
+            <p className="text-white">0xArtcade Game Sandbox - Mobile Emulator</p>
           </div>
         </div>
       </section>
