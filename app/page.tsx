@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { GameArea } from "@/components/game-area";
 
 export default function Home() {
   return (
@@ -23,9 +24,15 @@ export default function Home() {
         data-testid="app-preview"
       >
         <div className="relative h-full w-full flex items-center justify-center">
-          <div className="hidden md:flex w-[440px] h-[956px] bg-gray-800 rounded-lg shadow-lg items-center justify-center">
-            <p className="text-white">Mobile App Preview</p>
+          {/* Desktop preview with iPhone frame */}
+          <div className="hidden md:block">
+            <GameArea>
+              <div className="flex items-center justify-center h-full">
+                <p className="text-white">Mobile App Preview</p>
+              </div>
+            </GameArea>
           </div>
+          {/* Mobile view (full screen) */}
           <div className="md:hidden h-full w-full bg-gray-800 flex items-center justify-center">
             <p className="text-white">Mobile App Preview</p>
           </div>
