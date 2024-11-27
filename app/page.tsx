@@ -38,9 +38,7 @@ export default function Home() {
         <div className="relative h-full w-full flex items-center justify-center">
           {/* Desktop preview with iPhone frame */}
           <div className="hidden md:block">
-            <GameArea>
-              <ArtGuesserInterface />
-            </GameArea>
+            <GameArea />
           </div>
 
           {/* Mobile view (full screen) */}

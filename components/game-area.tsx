@@ -1,17 +1,16 @@
 import { Card, CardContent } from "@/components/ui/card"
-import GameInterface from "./games/artguessr-6529/game-interface"
-import { ReactNode } from 'react'
+import { GAME_TYPES } from '@/config/game-registry'
+import { ACTIVE_GAME } from '@/config/active-game'
+import dynamic from 'next/dynamic'
 
-interface GameAreaProps {
-  children?: ReactNode;
-}
+export function GameArea() {
+  const GameComponent = dynamic(() => import(`@/components/${GAME_TYPES[ACTIVE_GAME.type].path}`))
 
-export function GameArea({ children }: GameAreaProps) {
   return (
     <Card className="w-[375px] h-[812px] bg-black rounded-[60px] shadow-xl overflow-hidden border-4 border-gray-700 relative">
       <div className="absolute top-0 left-1/2 transform -translate-x-1/2 w-40 h-7 bg-gray-700 rounded-b-3xl"></div>
       <CardContent className="w-full h-full pt-10 pb-4 px-4 flex flex-col">
-        {children || <GameInterface />}
+        <GameComponent />
       </CardContent>
     </Card>
   )
