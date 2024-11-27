@@ -7,12 +7,14 @@ interface NFTImageProps {
 
 export function NFTImage({ src, alt }: NFTImageProps) {
   return (
-    <div className="w-full h-[45%] relative overflow-hidden rounded-lg mb-4">
+    <div className="relative w-full aspect-square rounded-lg overflow-hidden">
       <Image
         src={src}
         alt={alt}
         fill
+        sizes="(max-width: 768px) 100vw, 50vw"
         className="object-cover"
+        unoptimized
         priority
       />
     </div>

@@ -2,29 +2,42 @@ import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { X } from 'lucide-react'
 import { ActionButton } from './action-button'
+import { Tag, Criteria, GameState } from '@/types/game-types'
 
-type Criteria = 'MINT PRICE' | 'MINT DATE' | 'ARTIST NAME' | 'ART NAME'
-
-interface Tag {
-  id: string
-  criteria: Criteria
-  value: string
-  isCorrect: boolean
+const criteriaLabels: Record<Criteria, string> = {
+  'TOTAL SUPPLY': 'Total Supply',
+  'SEASON': 'Season',
+  'ARTIST NAME': 'Artist Name',
+  'ART NAME': 'Art Name'
 }
 
 const criteriaColors: Record<Criteria, string> = {
-  'MINT PRICE': '#00CAFF',
-  'MINT DATE': '#9D4EDD',
-  'ARTIST NAME': '#FF00C1',
-  'ART NAME': '#FFD700',
+  'TOTAL SUPPLY': '#4CAF50',  // Green
+  'SEASON': '#2196F3',        // Blue
+  'ARTIST NAME': '#FF9800',   // Orange
+  'ART NAME': '#E91E63'       // Pink
 }
 
-const CORRECT_COLOR = '#228B22'
+const HOVER_GRADIENT = `
+  linear-gradient(
+    to bottom right,
+    rgba(255, 255, 255, 0.3) 0%,
+    rgba(255, 255, 255, 0.1) 50%,
+    transparent 50%,
+    transparent 100%
+  )
+`
+
+// Option 1: Using Geist (which we already have in layout.tsx)
+const tagStyle = {
+  fontFamily: 'var(--font-geist-sans)',
+  letterSpacing: '0.02em'
+}
 
 interface GuessingInterfaceProps {
   tags: Tag[]
   selectedTags: Record<Criteria, Tag | null>
-  gameState: 'playing' | 'submitted' | 'nextRound'
+  gameState: GameState
   onTagClick: (tag: Tag) => void
   onReset: (criteria: Criteria) => void
   onCriteriaClick: (criteria: Criteria) => void
@@ -41,6 +54,13 @@ export function GuessingInterface({
   onSubmit,
 }: GuessingInterfaceProps) {
   const [focusedCriteria, setFocusedCriteria] = useState<Criteria | null>(null)
+
+  console.log('Rendering GuessingInterface:', {
+    tags,
+    selectedTags,
+    gameState,
+    focusedCriteria
+  })
 
   const handleCriteriaClick = (criteria: Criteria) => {
     if (gameState === 'playing') {
@@ -69,12 +89,14 @@ export function GuessingInterface({
               (!selectedTags[tag.criteria] && (focusedCriteria === null || focusedCriteria === tag.criteria)) && (
                 <motion.button
                   key={tag.id}
-                  className="px-2 py-1 rounded-full text-xs font-semibold relative overflow-hidden tag-button"
+                  className="px-3 py-1.5 rounded-full text-xs font-medium relative overflow-hidden tag-button hover:scale-105"
                   style={{
                     backgroundColor: 'black',
                     color: criteriaColors[tag.criteria],
                     borderColor: criteriaColors[tag.criteria],
                     borderWidth: 1,
+                    transition: 'all 0.2s ease',
+                    ...tagStyle
                   }}
                   onClick={() => onTagClick(tag)}
                   initial={{ opacity: 1, scale: 1 }}
@@ -116,7 +138,7 @@ export function GuessingInterface({
                   style={{
                     backgroundColor: gameState === 'submitted'
                       ? selectedTags[criteria]?.isCorrect
-                        ? `${CORRECT_COLOR}BF`
+                        ? `${criteriaColors[criteria]}BF`
                         : '#FF0000BF'
                       : criteriaColors[criteria],
                     color: 'white',
@@ -149,7 +171,7 @@ export function GuessingInterface({
                     className="text-xs font-semibold opacity-70 text-center px-1 uppercase"
                     style={{ color: criteriaColors[criteria] }}
                   >
-                    {criteria}
+                    {criteriaLabels[criteria]}
                   </span>
                 </motion.div>
               )}
