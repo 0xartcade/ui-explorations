@@ -43,7 +43,7 @@ export default function GameInterface() {
       ...prev,
       [tag.criteria]: tag,
     }))
-    const questionColor = GAME_CONFIG.questions.find(q => q.id === tag.criteria)?.color;
+    const questionColor = GAME_CONFIG.questions.find(q => q.id === tag.criteria)?.color ?? null;
     setSelectedColor(questionColor);
     
     setTimeout(() => {
