@@ -14,22 +14,39 @@ const geistMono = localFont({
 });
 
 export const metadata: Metadata = {
-  title: "0xArtcade - Game Sandbox",
-  description: "this is a sandbox for game designers to prototype and preview their 0xArtcade games in a mobile environment",
+  title: "0xArtcade",
+  description: "0xArtcade Game Sandbox",
+  manifest: "/manifest.json",
+  themeColor: "#000000",
+  viewport: {
+    width: 'device-width',
+    initialScale: 1,
+    maximumScale: 1,
+    userScalable: false,
+  },
+  other: {
+    'mobile-web-app-capable': 'yes',
+    'apple-mobile-web-app-capable': 'yes',
+    'apple-mobile-web-app-status-bar-style': 'black-translucent',
+    'apple-mobile-web-app-title': '0xArtcade',
+  },
 };
 
 export default function RootLayout({
   children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+}: {
+  children: React.ReactNode
+}) {
   return (
-    <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
+    <html lang="en" className={`bg-black ${geistSans.variable} ${geistMono.variable}`}>
+      <head>
+        <meta name="theme-color" content="#000000" />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+      </head>
+      <body className="bg-black min-h-screen font-sans">
         {children}
       </body>
     </html>
-  );
+  )
 }

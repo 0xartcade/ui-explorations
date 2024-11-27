@@ -1,6 +1,6 @@
 import Image from "next/image";
 import { GameArea } from "@/components/game-area";
-import { GameTemplate } from "@/components/games/game-template";
+import ArtGuesserInterface from "@/components/games/artguessr-6529/game-interface";
 
 export default function Home() {
   return (
@@ -38,12 +38,14 @@ export default function Home() {
         <div className="relative h-full w-full flex items-center justify-center">
           {/* Desktop preview with iPhone frame */}
           <div className="hidden md:block">
-            <GameArea />
+            <GameArea>
+              <ArtGuesserInterface />
+            </GameArea>
           </div>
 
           {/* Mobile view (full screen) */}
           <div className="md:hidden h-full w-full bg-gray-950">
-            <GameTemplate />
+            <ArtGuesserInterface />
           </div>
         </div>
       </section>

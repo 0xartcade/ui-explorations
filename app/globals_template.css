@@ -1,0 +1,79 @@
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.retro-button {
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.retro-button::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(
+    to bottom right,
+    rgba(255, 255, 255, 0.3) 0%,
+    rgba(255, 255, 255, 0.1) 50%,
+    transparent 50%,
+    transparent 100%
+  );
+  transform: rotate(-45deg);
+  transition: all 0.3s ease;
+}
+
+.retro-button:hover::before {
+  top: -100%;
+  left: -100%;
+}
+
+.tag-button {
+  transition: all 0.2s ease;
+}
+
+.tag-button:hover {
+  animation: wiggle 0.5s ease-in-out infinite;
+}
+
+@keyframes wiggle {
+  0% { transform: rotate(0deg) scale(1.05); }
+  25% { transform: rotate(-1deg) scale(1.05); }
+  75% { transform: rotate(1deg) scale(1.05); }
+  100% { transform: rotate(0deg) scale(1.05); }
+}
+
+.tag-button::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(
+    to bottom right,
+    rgba(255, 255, 255, 0.3) 0%,
+    rgba(255, 255, 255, 0.1) 50%,
+    transparent 50%,
+    transparent 100%
+  );
+  transform: rotate(-45deg);
+  transition: all 0.3s ease;
+  opacity: 0;
+}
+
+.tag-button:hover::before {
+  opacity: 1;
+  top: -100%;
+  left: -100%;
+}
+
+.cursor-grab {
+  cursor: grab;
+}
+
