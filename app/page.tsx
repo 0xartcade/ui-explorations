@@ -37,26 +37,12 @@ export default function Home() {
         <div className="relative h-full w-full flex items-center justify-center">
           {/* Desktop preview with iPhone frame */}
           <div className="hidden md:block">
-            <GameArea>
-              <div className="flex flex-col items-center justify-center h-full space-y-4">
-                <h1 className="text-white text-2xl font-semibold">
-                  0xArtcade Game Sandbox
-                </h1>
-                <p className="text-white/80 text-base">
-                  Desktop Emulator
-                </p>
-              </div>
-            </GameArea>
+            <GameArea />
           </div>
 
           {/* Mobile view (full screen) */}
-          <div className="md:hidden h-full w-full bg-gray-950 flex flex-col items-center justify-center space-y-4">
-            <h1 className="text-white text-2xl font-semibold">
-              0xArtcade Game Sandbox
-            </h1>
-            <p className="text-white/80 text-base">
-              Mobile Emulator
-            </p>
+          <div className="md:hidden h-full w-full bg-gray-950">
+            <GameArea />
           </div>
         </div>
       </section>
