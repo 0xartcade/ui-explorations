@@ -1,5 +1,5 @@
 import { Card, CardContent } from "@/components/ui/card"
-import { GameTemplate } from "./game-template"
+import { GameTemplate } from "./games/game-template"
 
 export function GameArea() {
   return (

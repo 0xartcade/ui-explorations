@@ -1,5 +1,6 @@
 import Image from "next/image";
 import { GameArea } from "@/components/game-area";
+import { GameTemplate } from "@/components/games/game-template";
 
 export default function Home() {
   return (
@@ -42,7 +43,7 @@ export default function Home() {
 
           {/* Mobile view (full screen) */}
           <div className="md:hidden h-full w-full bg-gray-950">
-            <GameArea />
+            <GameTemplate />
           </div>
         </div>
       </section>
