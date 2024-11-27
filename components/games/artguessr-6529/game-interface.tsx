@@ -96,7 +96,6 @@ export default function GameInterface() {
     <ActionWrapper 
       color={dominantColor}
       selectedColor={selectedColor}
-      opacity={0.5}
       isPulsing={true}
     >
       <div className="game-layout flex flex-col h-screen max-h-screen overflow-hidden rounded-3xl backdrop-blur-md"
@@ -131,7 +130,6 @@ export default function GameInterface() {
             onTagClick={handleTagClick}
             onReset={handleReset}
             onCriteriaClick={handleCriteriaClick}
-            onSubmit={handleSubmit}
           />
         </div>
 

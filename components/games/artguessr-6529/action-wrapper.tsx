@@ -1,7 +1,7 @@
 "use client"
 
 import { motion } from 'framer-motion'
-import { useEffect } from 'react'
+import { useEffect, useCallback } from 'react'
 
 interface ActionWrapperProps {
   children: React.ReactNode
@@ -16,15 +16,12 @@ export function ActionWrapper({
   selectedColor = null,
   isPulsing = false,
 }: ActionWrapperProps) {
-  const getRgba = (alpha: number) => {
-    const r = parseInt(color.slice(1, 3), 16);
-    const g = parseInt(color.slice(3, 5), 16);
-    const b = parseInt(color.slice(5, 7), 16);
-    return `rgba(${r}, ${g}, ${b}, ${alpha})`;
-  };
+  const getRgba = useCallback((color: string, alpha: number) => {
+    return `rgba(${parseInt(color.slice(1, 3), 16)}, ${parseInt(color.slice(3, 5), 16)}, ${parseInt(color.slice(5, 7), 16)}, ${alpha})`;
+  }, []);
 
   const getBottomRgba = (alpha: number) => {
-    if (!selectedColor) return getRgba(alpha);
+    if (!selectedColor) return getRgba(color, alpha);
     const r = parseInt(selectedColor.slice(1, 3), 16);
     const g = parseInt(selectedColor.slice(3, 5), 16);
     const b = parseInt(selectedColor.slice(5, 7), 16);
@@ -32,7 +29,7 @@ export function ActionWrapper({
   };
 
   useEffect(() => {
-    const themeColor = getRgba(0.63);
+    const themeColor = getRgba(color, 0.63);
     console.log('Status bar color:', themeColor);
     document.querySelector('meta[name="theme-color"]')?.setAttribute('content', themeColor);
     document.documentElement.style.setProperty('--status-bar-background', themeColor);
@@ -41,8 +38,8 @@ export function ActionWrapper({
   const baseGradient = `
     linear-gradient(
       to bottom,
-      ${getRgba(0.55)} 0%,
-      ${getRgba(0.55)} 25%,
+      ${getRgba(color, 0.55)} 0%,
+      ${getRgba(color, 0.55)} 25%,
       ${getBottomRgba(0.4)} 35%,
       ${getBottomRgba(0.2)} 100%
     )
