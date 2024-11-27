@@ -18,17 +18,6 @@ const criteriaColors: Record<Criteria, string> = {
   'ART NAME': '#E91E63'       // Pink
 }
 
-const HOVER_GRADIENT = `
-  linear-gradient(
-    to bottom right,
-    rgba(255, 255, 255, 0.3) 0%,
-    rgba(255, 255, 255, 0.1) 50%,
-    transparent 50%,
-    transparent 100%
-  )
-`
-
-// Option 1: Using Geist (which we already have in layout.tsx)
 const tagStyle = {
   fontFamily: 'var(--font-geist-sans)',
   letterSpacing: '0.02em'
