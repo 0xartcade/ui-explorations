@@ -4,23 +4,27 @@ import { useState, useEffect } from 'react'
 import { GuessingInterface } from './guessing-interface'
 import { NFTImage } from './nft-image'
 import { generateGameData } from '@/utils/game-utils'
+import { fetchGameData } from '@/utils/game-data'
+import { ACTIVE_GAME } from '@/config/active-game'
 import { GameData, NFTMetadata, Tag, Criteria, GameState } from '@/types/game-types'
+import { GAME_CONFIG } from './game-config'
 
 export default function GameInterface() {
   const [gameData, setGameData] = useState<{nft: NFTMetadata, tags: Tag[]} | null>(null)
   const [gameState, setGameState] = useState<GameState>('playing')
-  const [selectedTags, setSelectedTags] = useState<Record<Criteria, Tag | null>>({
-    'TOTAL SUPPLY': null,
-    'SEASON': null,
-    'ARTIST NAME': null,
-    'ART NAME': null,
-  })
+  const [selectedTags, setSelectedTags] = useState<Record<Criteria, Tag | null>>(
+    Object.fromEntries(
+      GAME_CONFIG.questions.map(q => [q.id, null])
+    ) as Record<Criteria, Tag | null>
+  )
 
   useEffect(() => {
-    fetch('https://noaskfrnx3lefz7r.public.blob.vercel-storage.com/6529-memes-1-302-ICCX18MmBs6NxwL2wMEwJr5xQfH5Bx.json')
-      .then(res => res.json())
+    fetchGameData(ACTIVE_GAME.mode)
       .then((data: GameData) => {
         setGameData(generateGameData(data))
+      })
+      .catch(error => {
+        console.error('Failed to fetch game data:', error)
       })
   }, [])
 
@@ -35,15 +39,13 @@ export default function GameInterface() {
     if (gameState === 'playing') {
       setGameState('submitted');
     } else {
-      setSelectedTags({
-        'TOTAL SUPPLY': null,
-        'SEASON': null,
-        'ARTIST NAME': null,
-        'ART NAME': null,
-      });
+      setSelectedTags(
+        Object.fromEntries(
+          GAME_CONFIG.questions.map(q => [q.id, null])
+        ) as Record<Criteria, Tag | null>
+      );
       
-      fetch('https://noaskfrnx3lefz7r.public.blob.vercel-storage.com/6529-memes-1-302-ICCX18MmBs6NxwL2wMEwJr5xQfH5Bx.json')
-        .then(res => res.json())
+      fetchGameData(ACTIVE_GAME.mode)
         .then((data: GameData) => {
           setGameData(generateGameData(data));
           setGameState('playing');
@@ -95,7 +97,7 @@ export default function GameInterface() {
       </div>
     </div>
   ) : (
-    <div>Loading...</div>
+    <div className="flex items-center justify-center h-full text-white/70">Loading...</div>
   )
 }
 

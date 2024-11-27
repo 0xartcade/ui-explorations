@@ -1,22 +1,11 @@
+"use client"
+
 import { useState, useMemo } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { X } from 'lucide-react'
 import { ActionButton } from './action-button'
+import { GAME_CONFIG, getQuestionColor } from './game-config'
 import { Tag, Criteria, GameState } from '@/types/game-types'
-
-const criteriaLabels: Record<Criteria, string> = {
-  'TOTAL SUPPLY': 'Total Supply',
-  'SEASON': 'Season',
-  'ARTIST NAME': 'Artist Name',
-  'ART NAME': 'Art Name'
-}
-
-const criteriaColors: Record<Criteria, string> = {
-  'TOTAL SUPPLY': '#4CAF50',  // Green
-  'SEASON': '#2196F3',        // Blue
-  'ARTIST NAME': '#FF9800',   // Orange
-  'ART NAME': '#E91E63'       // Pink
-}
 
 const HOVER_GRADIENT = `
   linear-gradient(
@@ -47,29 +36,18 @@ export function GuessingInterface({
   onCriteriaClick,
   onSubmit,
 }: GuessingInterfaceProps) {
-  // Restore the focused criteria state
   const [focusedCriteria, setFocusedCriteria] = useState<Criteria | null>(null);
-
-  // Randomize tags order on each render
   const randomizedTags = useMemo(() => 
     [...tags].sort(() => Math.random() - 0.5)
   , [tags]);
 
-  console.log('Rendering GuessingInterface:', {
-    tags,
-    selectedTags,
-    gameState,
-  })
-
   const handleCriteriaClick = (criteria: Criteria) => {
     if (gameState === 'playing') {
-      // Toggle the focused criteria
       setFocusedCriteria(prev => prev === criteria ? null : criteria);
       onCriteriaClick(criteria);
     }
   }
 
-  // Filter tags based on focused criteria
   const visibleTags = useMemo(() => {
     if (!focusedCriteria) return randomizedTags;
     return randomizedTags.filter(tag => tag.criteria === focusedCriteria);
@@ -82,7 +60,7 @@ export function GuessingInterface({
           <div className="text-center text-white">
             <p className="text-xl font-bold mb-2">Your Score</p>
             <p className="text-3xl font-bold">
-              {Object.values(selectedTags).filter((tag) => tag?.isCorrect).length} / 4
+              {Object.values(selectedTags).filter((tag) => tag?.isCorrect).length} / {GAME_CONFIG.questions.length}
             </p>
           </div>
         ) : (
@@ -94,8 +72,8 @@ export function GuessingInterface({
                   className="px-2 py-1 rounded-full text-xs font-semibold relative overflow-hidden tag-button hover:scale-105"
                   style={{
                     backgroundColor: 'black',
-                    color: criteriaColors[tag.criteria],
-                    borderColor: criteriaColors[tag.criteria],
+                    color: getQuestionColor(tag.criteria),
+                    borderColor: getQuestionColor(tag.criteria),
                     borderWidth: 1,
                     transition: 'all 0.2s ease',
                   }}
@@ -104,7 +82,7 @@ export function GuessingInterface({
                   }}
                   onClick={() => {
                     onTagClick(tag);
-                    setFocusedCriteria(null); // Reset focus after selecting
+                    setFocusedCriteria(null);
                   }}
                   initial={{ opacity: 1, scale: 1 }}
                   exit={{
@@ -121,46 +99,46 @@ export function GuessingInterface({
         )}
       </div>
       <div className="grid grid-cols-2 gap-2 mb-2">
-        {(Object.keys(selectedTags) as Criteria[]).map((criteria) => (
+        {GAME_CONFIG.questions.map((question) => (
           <div
-            key={criteria}
+            key={question.id}
             className="h-8 rounded-full border flex items-center justify-center overflow-hidden transition-colors duration-200 relative"
             style={{
-              borderColor: criteriaColors[criteria],
-              backgroundColor: selectedTags[criteria]
-                ? criteriaColors[criteria]
+              borderColor: question.color,
+              backgroundColor: selectedTags[question.id]
+                ? question.color
                 : 'rgba(0, 0, 0, 0.5)',
               borderWidth: gameState === 'submitted' ? 2 : 1,
             }}
-            onClick={() => handleCriteriaClick(criteria)}
+            onClick={() => handleCriteriaClick(question.id as Criteria)}
           >
             <AnimatePresence mode="wait">
-              {selectedTags[criteria] ? (
+              {selectedTags[question.id] ? (
                 <motion.div
-                  key={selectedTags[criteria]?.id}
+                  key={selectedTags[question.id]?.id}
                   initial={{ opacity: 0, scale: 0.8 }}
                   animate={{ opacity: 1, scale: 1 }}
                   exit={{ opacity: 0, scale: 0.8 }}
                   className="w-full h-full flex items-center justify-center px-2 py-1 rounded-full text-xs font-semibold uppercase relative"
                   style={{
                     backgroundColor: gameState === 'submitted'
-                      ? selectedTags[criteria]?.isCorrect
-                        ? `${criteriaColors[criteria]}BF`
+                      ? selectedTags[question.id]?.isCorrect
+                        ? `${question.color}BF`
                         : '#FF0000BF'
-                      : criteriaColors[criteria],
+                      : question.color,
                     color: 'white',
                     transition: 'background-color 0.2s ease',
                   }}
                 >
-                  {selectedTags[criteria]?.value}
+                  {selectedTags[question.id]?.value}
                   {gameState === 'playing' && (
                     <button
                       onClick={(e) => {
                         e.stopPropagation();
-                        onReset(criteria);
+                        onReset(question.id as Criteria);
                       }}
                       className="absolute right-1 top-1/2 -translate-y-1/2 w-4 h-4 flex items-center justify-center z-10 bg-black bg-opacity-50 rounded-full"
-                      aria-label={`Reset ${criteria} selection`}
+                      aria-label={`Reset ${question.label} selection`}
                     >
                       <X size={8} className="text-white" />
                     </button>
@@ -168,7 +146,7 @@ export function GuessingInterface({
                 </motion.div>
               ) : (
                 <motion.div
-                  key={`empty-${criteria}`}
+                  key={`empty-${question.id}`}
                   initial={{ opacity: 0, scale: 0.8 }}
                   animate={{ opacity: 1, scale: 1 }}
                   exit={{ opacity: 0, scale: 0.8 }}
@@ -176,9 +154,9 @@ export function GuessingInterface({
                 >
                   <span
                     className="text-xs font-semibold opacity-70 text-center px-1 uppercase"
-                    style={{ color: criteriaColors[criteria] }}
+                    style={{ color: question.color }}
                   >
-                    {criteriaLabels[criteria]}
+                    {question.label}
                   </span>
                 </motion.div>
               )}
