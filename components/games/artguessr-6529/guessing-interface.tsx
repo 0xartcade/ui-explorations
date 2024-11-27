@@ -47,7 +47,8 @@ export function GuessingInterface({
   onCriteriaClick,
   onSubmit,
 }: GuessingInterfaceProps) {
-  const [focusedCriteria, setFocusedCriteria] = useState<Criteria | null>(null)
+  // Restore the focused criteria state
+  const [focusedCriteria, setFocusedCriteria] = useState<Criteria | null>(null);
 
   // Randomize tags order on each render
   const randomizedTags = useMemo(() => 
@@ -58,22 +59,24 @@ export function GuessingInterface({
     tags,
     selectedTags,
     gameState,
-    focusedCriteria
   })
 
   const handleCriteriaClick = (criteria: Criteria) => {
     if (gameState === 'playing') {
-      if (focusedCriteria === criteria) {
-        setFocusedCriteria(null)
-      } else {
-        setFocusedCriteria(criteria)
-      }
-      onCriteriaClick(criteria)
+      // Toggle the focused criteria
+      setFocusedCriteria(prev => prev === criteria ? null : criteria);
+      onCriteriaClick(criteria);
     }
   }
 
+  // Filter tags based on focused criteria
+  const visibleTags = useMemo(() => {
+    if (!focusedCriteria) return randomizedTags;
+    return randomizedTags.filter(tag => tag.criteria === focusedCriteria);
+  }, [randomizedTags, focusedCriteria]);
+
   return (
-    <div className="flex-grow flex flex-col relative pt-4 pb-2">
+    <div className="flex-grow flex flex-col relative py-3">
       <div className="flex-1 flex flex-wrap content-center gap-2 justify-center overflow-hidden mb-4">
         {gameState === 'submitted' ? (
           <div className="text-center text-white">
@@ -84,8 +87,8 @@ export function GuessingInterface({
           </div>
         ) : (
           <AnimatePresence>
-            {randomizedTags.map((tag) => (
-              (!selectedTags[tag.criteria] && (focusedCriteria === null || focusedCriteria === tag.criteria)) && (
+            {visibleTags.map((tag) => (
+              (!selectedTags[tag.criteria]) && (
                 <motion.button
                   key={tag.id}
                   className="px-2 py-1 rounded-full text-xs font-semibold relative overflow-hidden tag-button hover:scale-105"
@@ -99,7 +102,10 @@ export function GuessingInterface({
                   whileHover={{
                     background: HOVER_GRADIENT,
                   }}
-                  onClick={() => onTagClick(tag)}
+                  onClick={() => {
+                    onTagClick(tag);
+                    setFocusedCriteria(null); // Reset focus after selecting
+                  }}
                   initial={{ opacity: 1, scale: 1 }}
                   exit={{
                     opacity: 0,

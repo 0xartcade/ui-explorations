@@ -60,20 +60,9 @@ export default function GameInterface() {
       
       setGameData((prevGameData) => {
         if (!prevGameData) return null;
-        
-        const resetTagWithNewId = {
-          ...tagToReset,
-          id: `${criteria.toLowerCase()}-${Date.now()}`
-        };
-        
-        const allTags = [
-          ...prevGameData.tags,
-          resetTagWithNewId
-        ].sort(() => Math.random() - 0.5);
-        
         return {
           ...prevGameData,
-          tags: allTags
+          tags: prevGameData.tags
         };
       });
     }
@@ -86,21 +75,25 @@ export default function GameInterface() {
   }
 
   return gameData ? (
-    <>
-      <NFTImage
-        src={gameData.nft.image_url}
-        alt={gameData.nft.questions.title}
-      />
-      <GuessingInterface
-        tags={gameData.tags}
-        selectedTags={selectedTags}
-        gameState={gameState}
-        onTagClick={handleTagClick}
-        onReset={handleReset}
-        onCriteriaClick={handleCriteriaClick}
-        onSubmit={handleSubmit}
-      />
-    </>
+    <div className="flex flex-col h-full">
+      <div className="w-full h-[50%]">
+        <NFTImage
+          src={gameData.nft.image_url}
+          alt={gameData.nft.questions.title}
+        />
+      </div>
+      <div className="flex-1 px-2 md:px-3 flex flex-col">
+        <GuessingInterface
+          tags={gameData.tags}
+          selectedTags={selectedTags}
+          gameState={gameState}
+          onTagClick={handleTagClick}
+          onReset={handleReset}
+          onCriteriaClick={handleCriteriaClick}
+          onSubmit={handleSubmit}
+        />
+      </div>
+    </div>
   ) : (
     <div>Loading...</div>
   )
