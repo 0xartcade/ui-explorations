@@ -14,7 +14,7 @@ const geistMono = localFont({
 });
 
 export const metadata: Metadata = {
-  title: "0xArtcade - Game Design Sandbox",
+  title: "0xArtcade - Game Sandbox",
   description: "this is a sandbox for game designers to prototype and preview their 0xArtcade games in a mobile environment",
 };
 
