@@ -4,8 +4,9 @@ import { GameArea } from "@/components/game-area";
 export default function Home() {
   return (
     <main className="flex min-h-screen bg-black">
+      {/* Information Sidebar */}
       <aside 
-        className="hidden md:flex md:w-1/2 items-center justify-center flex-col gap-8 p-8"
+        className="hidden md:flex md:w-1/2 flex-col items-center justify-center space-y-8 p-8"
         data-testid="app-information"
       >
         <Image
@@ -14,11 +15,21 @@ export default function Home() {
           width={600}
           height={200}
           priority
+          className="w-auto h-auto"
         />
-        <p className="text-white text-center max-w-md">
-          Welcome to the 0xArtcade App Preview. You can use this template to prototype and preview your game in mobile environment. This screen will disapear and your app will become full-screen when adding to the home screen on iOS and Android
-        </p>
+        <div className="space-y-4 text-center">
+          <h1 className="text-white text-2xl font-semibold">
+            Welcome to the 0xArtcade Game Sandbox
+          </h1>
+          <p className="text-white/80 text-base max-w-md leading-relaxed">
+            You can use this sandbox to prototype and preview your game in mobile environment. 
+            This screen will disappear and your app will become full-screen when adding to the 
+            home screen on iOS and Android.
+          </p>
+        </div>
       </aside>
+
+      {/* Game Preview Section */}
       <section 
         className="w-full md:w-1/2 flex items-center justify-center"
         data-testid="app-preview"
@@ -27,14 +38,25 @@ export default function Home() {
           {/* Desktop preview with iPhone frame */}
           <div className="hidden md:block">
             <GameArea>
-              <div className="flex items-center justify-center h-full">
-                <p className="text-white">Mobile App Preview</p>
+              <div className="flex flex-col items-center justify-center h-full space-y-4">
+                <h1 className="text-white text-2xl font-semibold">
+                  0xArtcade Game Sandbox
+                </h1>
+                <p className="text-white/80 text-base">
+                  Desktop Emulator
+                </p>
               </div>
             </GameArea>
           </div>
+
           {/* Mobile view (full screen) */}
-          <div className="md:hidden h-full w-full bg-gray-800 flex items-center justify-center">
-            <p className="text-white">Mobile App Preview</p>
+          <div className="md:hidden h-full w-full bg-gray-950 flex flex-col items-center justify-center space-y-4">
+            <h1 className="text-white text-2xl font-semibold">
+              0xArtcade Game Sandbox
+            </h1>
+            <p className="text-white/80 text-base">
+              Mobile Emulator
+            </p>
           </div>
         </div>
       </section>
