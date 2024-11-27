@@ -23,7 +23,6 @@ interface GuessingInterfaceProps {
   onTagClick: (tag: Tag) => void
   onReset: (criteria: Criteria) => void
   onCriteriaClick: (criteria: Criteria) => void
-  onSubmit: () => void
 }
 
 export function GuessingInterface({
@@ -33,7 +32,6 @@ export function GuessingInterface({
   onTagClick,
   onReset,
   onCriteriaClick,
-  onSubmit,
 }: GuessingInterfaceProps) {
   const [focusedCriteria, setFocusedCriteria] = useState<Criteria | null>(null);
   const randomizedTags = useMemo(() => 

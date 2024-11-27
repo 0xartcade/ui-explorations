@@ -5,20 +5,16 @@ import { useEffect } from 'react'
 
 interface ActionWrapperProps {
   children: React.ReactNode
-  color?: string
-  selectedColor?: string | null
-  opacity?: number
-  isPulsing?: boolean
-  isFading?: boolean
+  color: string
+  selectedColor: string | null
+  isPulsing: boolean
 }
 
 export function ActionWrapper({
   children,
   color = '#00FF00',
   selectedColor = null,
-  opacity = 1,
   isPulsing = false,
-  isFading = false,
 }: ActionWrapperProps) {
   const getRgba = (alpha: number) => {
     const r = parseInt(color.slice(1, 3), 16);
@@ -40,7 +36,7 @@ export function ActionWrapper({
     console.log('Status bar color:', themeColor);
     document.querySelector('meta[name="theme-color"]')?.setAttribute('content', themeColor);
     document.documentElement.style.setProperty('--status-bar-background', themeColor);
-  }, [color]);
+  }, [color, selectedColor, getRgba]);
 
   const baseGradient = `
     linear-gradient(
