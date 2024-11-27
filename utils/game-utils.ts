@@ -6,19 +6,13 @@ export function getRandomItem<T>(array: T[]): T {
 
 export function generateGameData(gameData: GameData): { nft: NFTMetadata; tags: Tag[] } {
   const correctNFT = getRandomItem(gameData.raw_data)
+  const timestamp = Date.now()
   
-  console.log('Correct NFT:', correctNFT)
-  console.log('Available Titles:', gameData.titles)
-  console.log('Available Artists:', gameData.artists)
-  console.log('Available Supplies:', gameData.supplies)
-  console.log('Available Seasons:', gameData.seasons)
-
   function getIncorrectOptions(correct: string | number, pool: (string | number)[]): (string | number)[] {
-    return Array.from(new Set(
-      pool.filter(item => item !== correct)
-    ))
-    .sort(() => Math.random() - 0.5)
-    .slice(0, 4)
+    const incorrectPool = pool.filter(item => String(item) !== String(correct))
+    return incorrectPool
+      .sort(() => Math.random() - 0.5)
+      .slice(0, 4)
   }
 
   function formatSeason(season: string | number): string {
@@ -31,35 +25,57 @@ export function generateGameData(gameData: GameData): { nft: NFTMetadata; tags: 
   const seasonOptions = getIncorrectOptions(correctNFT.questions.season, gameData.seasons)
 
   const tags: Tag[] = [
-    { id: 'title-1', criteria: 'ART NAME' as Criteria, value: correctNFT.questions.title, isCorrect: true },
+    // Correct options
+    { 
+      id: `art-correct-${timestamp}`, 
+      criteria: 'ART NAME' as Criteria, 
+      value: correctNFT.questions.title, 
+      isCorrect: true 
+    },
+    { 
+      id: `artist-correct-${timestamp}`, 
+      criteria: 'ARTIST NAME' as Criteria, 
+      value: correctNFT.questions.artist, 
+      isCorrect: true 
+    },
+    { 
+      id: `supply-correct-${timestamp}`, 
+      criteria: 'TOTAL SUPPLY' as Criteria, 
+      value: String(correctNFT.questions.supply), 
+      isCorrect: true 
+    },
+    { 
+      id: `season-correct-${timestamp}`, 
+      criteria: 'SEASON' as Criteria, 
+      value: formatSeason(correctNFT.questions.season), 
+      isCorrect: true 
+    },
+    // Incorrect options
     ...titleOptions.map((value, i) => ({
-      id: `title-${i + 2}`,
+      id: `art-${i}-${timestamp}`,
       criteria: 'ART NAME' as Criteria,
       value: String(value),
       isCorrect: false
     })),
-    { id: 'artist-1', criteria: 'ARTIST NAME' as Criteria, value: correctNFT.questions.artist, isCorrect: true },
     ...artistOptions.map((value, i) => ({
-      id: `artist-${i + 2}`,
+      id: `artist-${i}-${timestamp}`,
       criteria: 'ARTIST NAME' as Criteria,
       value: String(value),
       isCorrect: false
     })),
-    { id: 'supply-1', criteria: 'TOTAL SUPPLY' as Criteria, value: String(correctNFT.questions.supply), isCorrect: true },
     ...supplyOptions.map((value, i) => ({
-      id: `supply-${i + 2}`,
+      id: `supply-${i}-${timestamp}`,
       criteria: 'TOTAL SUPPLY' as Criteria,
       value: String(value),
       isCorrect: false
     })),
-    { id: 'season-1', criteria: 'SEASON' as Criteria, value: formatSeason(correctNFT.questions.season), isCorrect: true },
     ...seasonOptions.map((value, i) => ({
-      id: `season-${i + 2}`,
+      id: `season-${i}-${timestamp}`,
       criteria: 'SEASON' as Criteria,
       value: formatSeason(value),
       isCorrect: false
     }))
-  ].sort(() => Math.random() - 0.5)
+  ].sort(() => Math.random() - 0.5);
 
-  return { nft: correctNFT, tags }
+  return { nft: correctNFT, tags };
 }

@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useMemo } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { X } from 'lucide-react'
 import { ActionButton } from './action-button'
@@ -18,10 +18,15 @@ const criteriaColors: Record<Criteria, string> = {
   'ART NAME': '#E91E63'       // Pink
 }
 
-const tagStyle = {
-  fontFamily: 'var(--font-geist-sans)',
-  letterSpacing: '0.02em'
-}
+const HOVER_GRADIENT = `
+  linear-gradient(
+    to bottom right,
+    rgba(255, 255, 255, 0.3) 0%,
+    rgba(255, 255, 255, 0.1) 50%,
+    transparent 50%,
+    transparent 100%
+  )
+`
 
 interface GuessingInterfaceProps {
   tags: Tag[]
@@ -43,6 +48,11 @@ export function GuessingInterface({
   onSubmit,
 }: GuessingInterfaceProps) {
   const [focusedCriteria, setFocusedCriteria] = useState<Criteria | null>(null)
+
+  // Randomize tags order on each render
+  const randomizedTags = useMemo(() => 
+    [...tags].sort(() => Math.random() - 0.5)
+  , [tags]);
 
   console.log('Rendering GuessingInterface:', {
     tags,
@@ -74,18 +84,20 @@ export function GuessingInterface({
           </div>
         ) : (
           <AnimatePresence>
-            {tags.map((tag) => (
+            {randomizedTags.map((tag) => (
               (!selectedTags[tag.criteria] && (focusedCriteria === null || focusedCriteria === tag.criteria)) && (
                 <motion.button
                   key={tag.id}
-                  className="px-3 py-1.5 rounded-full text-xs font-medium relative overflow-hidden tag-button hover:scale-105"
+                  className="px-2 py-1 rounded-full text-xs font-semibold relative overflow-hidden tag-button hover:scale-105"
                   style={{
                     backgroundColor: 'black',
                     color: criteriaColors[tag.criteria],
                     borderColor: criteriaColors[tag.criteria],
                     borderWidth: 1,
                     transition: 'all 0.2s ease',
-                    ...tagStyle
+                  }}
+                  whileHover={{
+                    background: HOVER_GRADIENT,
                   }}
                   onClick={() => onTagClick(tag)}
                   initial={{ opacity: 1, scale: 1 }}

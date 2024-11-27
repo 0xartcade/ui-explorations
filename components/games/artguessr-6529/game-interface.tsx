@@ -33,18 +33,23 @@ export default function GameInterface() {
 
   const handleSubmit = () => {
     if (gameState === 'playing') {
-      setGameState('submitted')
-    } else if (gameState === 'submitted') {
+      setGameState('submitted');
+    } else {
       setSelectedTags({
         'TOTAL SUPPLY': null,
         'SEASON': null,
         'ARTIST NAME': null,
         'ART NAME': null,
-      })
-      setGameData(null)
-      setGameState('playing')
+      });
+      
+      fetch('https://noaskfrnx3lefz7r.public.blob.vercel-storage.com/6529-memes-1-302-ICCX18MmBs6NxwL2wMEwJr5xQfH5Bx.json')
+        .then(res => res.json())
+        .then((data: GameData) => {
+          setGameData(generateGameData(data));
+          setGameState('playing');
+        });
     }
-  }
+  };
 
   const handleReset = (criteria: Criteria) => {
     if (!gameData) return;
@@ -52,16 +57,27 @@ export default function GameInterface() {
     const tagToReset = selectedTags[criteria];
     if (tagToReset) {
       setSelectedTags((prev) => ({ ...prev, [criteria]: null }));
-      setGameData({
-        ...gameData,
-        tags: [
-          ...gameData.tags,
-          tagToReset,
-          ...gameData.tags.filter((tag) => tag.criteria === criteria && tag.id !== tagToReset.id)
-        ]
-      })
+      
+      setGameData((prevGameData) => {
+        if (!prevGameData) return null;
+        
+        const resetTagWithNewId = {
+          ...tagToReset,
+          id: `${criteria.toLowerCase()}-${Date.now()}`
+        };
+        
+        const allTags = [
+          ...prevGameData.tags,
+          resetTagWithNewId
+        ].sort(() => Math.random() - 0.5);
+        
+        return {
+          ...prevGameData,
+          tags: allTags
+        };
+      });
     }
-  }
+  };
 
   const handleCriteriaClick = (criteria: Criteria) => {
     if (gameState === 'playing') {
