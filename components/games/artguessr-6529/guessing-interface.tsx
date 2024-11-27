@@ -3,7 +3,6 @@
 import { useState, useMemo } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { X } from 'lucide-react'
-import { ActionButton } from './action-button'
 import { GAME_CONFIG, getQuestionColor } from './game-config'
 import { Tag, Criteria, GameState } from '@/types/game-types'
 
@@ -54,8 +53,8 @@ export function GuessingInterface({
   }, [randomizedTags, focusedCriteria]);
 
   return (
-    <div className="flex-grow flex flex-col relative py-3">
-      <div className="flex-1 flex flex-wrap content-center gap-2 justify-center overflow-hidden mb-4">
+    <div className="guessing-layout flex-grow flex flex-col relative py-0.5" style={{ backgroundColor: 'rgba(0, 0, 0, 0.9)' }}>
+      <div className="tags-container flex-1 flex flex-wrap content-center gap-1 justify-center overflow-y-auto mb-0.5 px-1" style={{ backgroundColor: 'rgba(0, 0, 0, 0.9)' }}>
         {gameState === 'submitted' ? (
           <div className="text-center text-white">
             <p className="text-xl font-bold mb-2">Your Score</p>
@@ -71,7 +70,7 @@ export function GuessingInterface({
                   key={tag.id}
                   className="px-2 py-1 rounded-full text-xs font-semibold relative overflow-hidden tag-button hover:scale-105"
                   style={{
-                    backgroundColor: 'black',
+                    backgroundColor: 'rgba(0, 0, 0, 0.75)',
                     color: getQuestionColor(tag.criteria),
                     borderColor: getQuestionColor(tag.criteria),
                     borderWidth: 1,
@@ -98,16 +97,16 @@ export function GuessingInterface({
           </AnimatePresence>
         )}
       </div>
-      <div className="grid grid-cols-2 gap-2 mb-2">
+      <div className="answer-grid grid grid-cols-2 gap-1 mt-auto" style={{ backgroundColor: 'rgba(0, 0, 0, 0.9)' }}>
         {GAME_CONFIG.questions.map((question) => (
           <div
             key={question.id}
-            className="h-8 rounded-full border flex items-center justify-center overflow-hidden transition-colors duration-200 relative"
+            className="answer-cell h-8 rounded-full border flex items-center justify-center overflow-hidden transition-colors duration-200 relative"
             style={{
               borderColor: question.color,
               backgroundColor: selectedTags[question.id]
                 ? question.color
-                : 'rgba(0, 0, 0, 0.5)',
+                : 'rgba(0, 0, 0, 0.9)',
               borderWidth: gameState === 'submitted' ? 2 : 1,
             }}
             onClick={() => handleCriteriaClick(question.id as Criteria)}
@@ -163,13 +162,6 @@ export function GuessingInterface({
             </AnimatePresence>
           </div>
         ))}
-      </div>
-      <div className="mt-auto">
-        <ActionButton
-          gameState={gameState}
-          onClick={onSubmit}
-          disabled={gameState === 'playing' && Object.values(selectedTags).some((value) => value === null)}
-        />
       </div>
     </div>
   )

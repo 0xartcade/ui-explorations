@@ -23,6 +23,7 @@ export const metadata: Metadata = {
     initialScale: 1,
     maximumScale: 1,
     userScalable: false,
+    viewportFit: 'cover',
   },
   other: {
     'mobile-web-app-capable': 'yes',
@@ -40,12 +41,15 @@ export default function RootLayout({
   return (
     <html lang="en" className={`bg-black ${geistSans.variable} ${geistMono.variable}`}>
       <head>
-        <meta name="theme-color" content="#000000" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
         <meta name="apple-mobile-web-app-capable" content="yes" />
-        <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
       </head>
       <body className="bg-black min-h-screen font-sans">
-        {children}
+        <div className="ios-status-bar-background" />
+        <div className="game-layout flex flex-col h-full">
+          {children}
+        </div>
       </body>
     </html>
   )
