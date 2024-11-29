@@ -25,14 +25,6 @@ export function ActionWrapper({
     return `rgba(${parseInt(color.slice(1, 3), 16)}, ${parseInt(color.slice(3, 5), 16)}, ${parseInt(color.slice(5, 7), 16)}, ${alpha})`;
   }, []);
 
-  const getBottomRgba = (alpha: number) => {
-    if (!selectedColor) return getRgba(color, alpha);
-    const r = parseInt(selectedColor.slice(1, 3), 16);
-    const g = parseInt(selectedColor.slice(3, 5), 16);
-    const b = parseInt(selectedColor.slice(5, 7), 16);
-    return `rgba(${r}, ${g}, ${b}, ${alpha})`;
-  };
-
   useEffect(() => {
     const themeColor = getRgba(color, 0.63);
     console.log('Status bar color:', themeColor);

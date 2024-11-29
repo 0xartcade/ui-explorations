@@ -1,6 +1,5 @@
 import Image from "next/image";
 import { GameArea } from "@/components/game-area";
-import ArtGuesserInterface from "@/components/games/artguessr-6529/game-interface";
 
 export default function Home() {
   return (
