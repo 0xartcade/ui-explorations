@@ -4,7 +4,7 @@ import { useState, useMemo } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { X } from 'lucide-react'
 import { GAME_CONFIG, getQuestionColor } from './game-config'
-import { Tag, Criteria, GameState } from '@/types/game-types'
+import { Tag, Criteria, GameState } from '../../../types/game-types'
 
 const HOVER_GRADIENT = `
   linear-gradient(

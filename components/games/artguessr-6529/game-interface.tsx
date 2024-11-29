@@ -7,9 +7,25 @@ import { ActionButton } from './action-button'
 import { generateGameData } from './game-utils'
 import { fetchGameData } from '@/utils/game-data'
 import { ACTIVE_GAME } from '@/config/active-game'
-import { GameData, NFTMetadata, Tag, Criteria, GameState } from '../../../types/game-types'
+import { GameData as TemplateGameData } from '../game-template/game-types'
+import { GameData, NFTMetadata, Tag, Criteria, GameState } from '@/types/game-types'
 import { GAME_CONFIG } from './game-config'
 import { ActionWrapper } from './action-wrapper'
+
+function transformToFullGameData(data: TemplateGameData): GameData {
+  const titles = [...new Set(data.raw_data.map(nft => nft.questions.title))]
+  const supplies = [...new Set(data.raw_data.map(nft => nft.questions.supply))]
+  const artists = [...new Set(data.raw_data.map(nft => nft.questions.artist))]
+  const seasons = [...new Set(data.raw_data.map(nft => nft.questions.season))]
+
+  return {
+    raw_data: data.raw_data,
+    titles,
+    supplies,
+    artists,
+    seasons
+  }
+}
 
 export default function GameInterface() {
   const [gameData, setGameData] = useState<{nft: NFTMetadata, tags: Tag[]} | null>(null)
@@ -24,15 +40,9 @@ export default function GameInterface() {
 
   useEffect(() => {
     fetchGameData(ACTIVE_GAME.mode)
-      .then((rawData) => {
-        const data: GameData = {
-          raw_data: rawData.raw_data,
-          titles: [],
-          supplies: [],
-          artists: [],
-          seasons: []
-        };
-        setGameData(generateGameData(data))
+      .then((data: TemplateGameData) => {
+        const fullData = transformToFullGameData(data)
+        setGameData(generateGameData(fullData))
       })
       .catch(error => {
         console.error('Failed to fetch game data:', error)
@@ -69,17 +79,14 @@ export default function GameInterface() {
       );
       
       fetchGameData(ACTIVE_GAME.mode)
-        .then((rawData) => {
-          const data: GameData = {
-            raw_data: rawData.raw_data,
-            titles: [],
-            supplies: [],
-            artists: [],
-            seasons: []
-          };
-          setGameData(generateGameData(data))
+        .then((data: TemplateGameData) => {
+          const fullData = transformToFullGameData(data)
+          setGameData(generateGameData(fullData))
           setGameState('playing');
-        });
+        })
+        .catch(error => {
+          console.error('Failed to fetch game data:', error)
+        })
     }
   };
 
