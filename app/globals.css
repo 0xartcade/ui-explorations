@@ -79,7 +79,7 @@
 
 @layer utilities {
   .safe-top {
-    padding-top: env(safe-area-inset-top);
+    padding-top: max(env(safe-area-inset-top), 1rem);
   }
   .safe-bottom {
     padding-bottom: env(safe-area-inset-bottom);
@@ -89,6 +89,13 @@
   }
   .safe-right {
     padding-right: env(safe-area-inset-right);
+  }
+  .mobile-full {
+    @media (max-width: 768px) {
+      width: 100vw;
+      height: 100vh;
+      height: -webkit-fill-available;
+    }
   }
 }
 

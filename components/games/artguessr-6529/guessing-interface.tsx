@@ -51,8 +51,8 @@ export function GuessingInterface({
   }, [randomizedTags, focusedCriteria]);
 
   return (
-    <div className="guessing-layout flex-grow flex flex-col relative py-0.5" style={{ backgroundColor: 'rgba(0, 0, 0, 0.9)' }}>
-      <div className="tags-container flex-1 flex flex-wrap content-center gap-1 justify-center overflow-y-auto mb-0.5 px-1" style={{ backgroundColor: 'rgba(0, 0, 0, 0.9)' }}>
+    <div className="guessing-layout flex-grow flex flex-col relative py-0.5" style={{ backgroundColor: 'rgba(0, 0, 0, 0)' }}>
+      <div className="tags-container flex-1 flex flex-wrap content-center gap-1.5 justify-center overflow-y-auto mb-0.5 px-1" style={{ backgroundColor: 'rgba(0, 0, 0, 0)' }}>
         {gameState === 'submitted' ? (
           <div className="text-center text-white">
             <p className="text-xl font-bold mb-2">Your Score</p>
@@ -95,7 +95,7 @@ export function GuessingInterface({
           </AnimatePresence>
         )}
       </div>
-      <div className="answer-grid grid grid-cols-2 gap-1 mt-auto" style={{ backgroundColor: 'rgba(0, 0, 0, 0.9)' }}>
+      <div className="answer-grid grid grid-cols-2 gap-1 mt-auto">
         {GAME_CONFIG.questions.map((question) => (
           <div
             key={question.id}

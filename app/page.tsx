@@ -43,7 +43,7 @@ export default function Home() {
 
           {/* Mobile view (full screen) */}
           <div className="md:hidden h-full w-full bg-gray-950">
-            <ArtGuesserInterface />
+            <GameArea />
           </div>
         </div>
       </section>

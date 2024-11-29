@@ -55,6 +55,9 @@ export default {
   			lg: 'var(--radius)',
   			md: 'calc(var(--radius) - 2px)',
   			sm: 'calc(var(--radius) - 4px)'
+  		},
+  		fontSize: {
+  			'xs': ['0.7rem', { lineHeight: '1.1rem' }],  // Example custom size
   		}
   	}
   },

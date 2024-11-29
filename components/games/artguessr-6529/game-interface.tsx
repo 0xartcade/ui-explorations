@@ -4,10 +4,10 @@ import { useState, useEffect } from 'react'
 import { GuessingInterface } from './guessing-interface'
 import { NFTImage } from './nft-image'
 import { ActionButton } from './action-button'
-import { generateGameData } from '@/utils/game-utils'
+import { generateGameData } from './game-utils'
 import { fetchGameData } from '@/utils/game-data'
 import { ACTIVE_GAME } from '@/config/active-game'
-import { GameData, NFTMetadata, Tag, Criteria, GameState } from '@/types/game-types'
+import { GameData, NFTMetadata, Tag, Criteria, GameState } from '../../../types/game-types'
 import { GAME_CONFIG } from './game-config'
 import { ActionWrapper } from './action-wrapper'
 
@@ -97,20 +97,18 @@ export default function GameInterface() {
       color={dominantColor}
       selectedColor={selectedColor}
       isPulsing={true}
+      blurhash={gameData.nft.blurhash}
+      imageUrl={gameData.nft.image_url}
     >
-      <div className="game-layout flex flex-col h-screen max-h-screen overflow-hidden rounded-3xl backdrop-blur-md"
+      <div className="game-layout flex flex-col h-screen max-h-screen overflow-hidden md:rounded-3xl backdrop-blur-md mb-1"
         style={{ 
-          backgroundColor: 'rgba(0, 0, 0, 0.4)',
-          backdropFilter: 'blur(8px)',
+          backgroundColor: 'rgba(0, 0, 0, 0)',
           paddingBottom: 'env(safe-area-inset-bottom)'
         }}>
-        {/* Image Container */}
-        <div className="relative w-full h-[45%] overflow-hidden" 
-          style={{ 
-            backgroundColor: 'rgb(0, 0, 0)',
-            paddingTop: 'env(safe-area-inset-top)'
-          }}>
-          <div className="absolute inset-0 rounded-2xl overflow-hidden">
+          
+        {/* IMAGE CONTAINER */}
+        <div className="relative w-full h-[45%] overflow-hidden">
+          <div className="absolute inset-0 md:rounded-2xl overflow-hidden" style={{ top: '15px' }}>
             <NFTImage
               src={gameData.nft.image_url}
               alt={gameData.nft.questions.title}
@@ -118,10 +116,10 @@ export default function GameInterface() {
           </div>
         </div>
 
-        {/* Guess Container - make it fill remaining space but not overflow */}
+        {/* GUESS CONTAINER */}
         <div className="guess-container flex-1 min-h-0 px-1 py-2 flex flex-col rounded-xl" 
           style={{ 
-            backgroundColor: 'rgba(0, 0, 0, 0.2)',
+            backgroundColor: 'rgba(0, 0, 0, 0)',
           }}>
           <GuessingInterface
             tags={gameData.tags}
@@ -133,8 +131,8 @@ export default function GameInterface() {
           />
         </div>
 
-        {/* Action Container */}
-        <div className="action-container h-12 px-0 bg-black/20 mt-auto">
+        {/* ACTION CONTAINER */}
+        <div className="action-container h-22 px-2 mt-auto pb-[1px]">
           <ActionButton
             gameState={gameState}
             onClick={handleSubmit}

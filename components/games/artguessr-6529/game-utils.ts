@@ -1,4 +1,4 @@
-import { GameData, NFTMetadata, Tag, Criteria } from '@/types/game-types'
+import { GameData, NFTMetadata, Tag, Criteria } from '../../../types/game-types'
 
 export function getRandomItem<T>(array: T[]): T {
   return array[Math.floor(Math.random() * array.length)]

@@ -15,7 +15,7 @@ export function ActionButton({ gameState, onClick, disabled }: ActionButtonProps
       style={{ 
         borderRadius: '15px 15px 20px 20px',
         minHeight: '3rem',
-        padding: '0.5rem'
+        padding: '.8rem'
       }}
       onClick={onClick}
       disabled={disabled}
