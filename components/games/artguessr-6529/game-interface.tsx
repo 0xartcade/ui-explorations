@@ -24,7 +24,14 @@ export default function GameInterface() {
 
   useEffect(() => {
     fetchGameData(ACTIVE_GAME.mode)
-      .then((data: GameData) => {
+      .then((rawData) => {
+        const data: GameData = {
+          raw_data: rawData.raw_data,
+          titles: [],
+          supplies: [],
+          artists: [],
+          seasons: []
+        };
         setGameData(generateGameData(data))
       })
       .catch(error => {
@@ -62,8 +69,15 @@ export default function GameInterface() {
       );
       
       fetchGameData(ACTIVE_GAME.mode)
-        .then((data: GameData) => {
-          setGameData(generateGameData(data));
+        .then((rawData) => {
+          const data: GameData = {
+            raw_data: rawData.raw_data,
+            titles: [],
+            supplies: [],
+            artists: [],
+            seasons: []
+          };
+          setGameData(generateGameData(data))
           setGameState('playing');
         });
     }
