@@ -49,7 +49,17 @@ export default {
   				'3': 'hsl(var(--chart-3))',
   				'4': 'hsl(var(--chart-4))',
   				'5': 'hsl(var(--chart-5))'
+  			},
+  			artcade: {
+  				aqua: '#52DBFF',
+  				purple: '#7637FE',
+  				pink: '#FF3DDC',
+  				tangerine: '#FF3D5D',
+  				yellow: '#FDECCF',
   			}
+  		},
+  		backgroundImage: {
+  			'primary-gradient': 'linear-gradient(180deg, #52DBFF 22%, #7637FE 52.5%, #FF3DDC 73.49%)',
   		},
   		borderRadius: {
   			lg: 'var(--radius)',
@@ -58,7 +68,12 @@ export default {
   		},
   		fontSize: {
   			'xs': ['0.7rem', { lineHeight: '1.1rem' }],  // Example custom size
-  		}
+  		},
+  		fontFamily: {
+  			monoton: ['Monoton', 'cursive'],
+  			sans: ['var(--font-geist-sans)', 'system-ui'],
+  			mono: ['var(--font-geist-mono)', 'monospace'],
+  		},
   	}
   },
   plugins: [require("tailwindcss-animate")],
