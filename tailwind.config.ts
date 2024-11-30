@@ -71,7 +71,8 @@ export default {
   			sm: 'calc(var(--radius) - 4px)'
   		},
   		fontSize: {
-  			'xs': ['0.7rem', { lineHeight: '1.1rem' }],  // Example custom size
+  			'xs': ['.75rem', { lineHeight: '1.1rem' }],
+			'sm': ['1.1rem', { lineHeight: '1.1rem' }],
   		},
   		fontFamily: {
   			monoton: ['Monoton', 'cursive'],
@@ -89,7 +90,7 @@ export default {
 
   		},
   		boxShadow: {
-  			'glass': '0 0 1rem 0 rgba(0, 0, 0, 0.2), inset 0 0 .25rem 0 rgba(255, 255, 255, 0.1)',
+  			'glass': '0 0 10px 0 rgba(255, 255, 255, 0.1)',
   		},
   	}
   },

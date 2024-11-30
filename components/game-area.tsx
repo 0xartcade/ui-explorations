@@ -4,7 +4,10 @@ import { ACTIVE_GAME } from '@/config/active-game'
 import dynamic from 'next/dynamic'
 
 export function GameArea() {
-  const GameComponent = dynamic(() => import(`@/components/${GAME_TYPES[ACTIVE_GAME.type].path}`))
+  const activeGameType = GAME_TYPES[ACTIVE_GAME.type];
+  
+  // Dynamic import of the game component
+  const GameComponent = dynamic(() => import(`@/components/${activeGameType.path}`))
 
   return (
     <div className="w-full h-full artcade-area">

@@ -11,7 +11,12 @@ export async function fetchGameData(mode: GameModeId): Promise<GameData> {
     return { raw_data: [] }
   }
   
+  const dataUrl = GAME_MODES[mode].dataUrl
+  if (!dataUrl) {
+    throw new Error(`No data URL configured for game mode: ${mode}`)
+  }
+  
   // Fetch real game data from the configured endpoint
-  const response = await fetch(GAME_MODES[mode].dataUrl)
+  const response = await fetch(dataUrl)
   return response.json()
 }

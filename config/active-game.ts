@@ -4,6 +4,6 @@ export const ACTIVE_GAME: {
   type: GameTypeId
   mode: GameModeId
 } = {
-  type: 'artguessr-6529',
+  type: 'artguessr',
   mode: '6529-collection'
 }

@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
 
@@ -13,22 +13,24 @@ const geistMono = localFont({
   weight: "100 900",
 });
 
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 1,
+  userScalable: false,
+  themeColor: "#000000",
+  viewportFit: "cover",
+};
+
 export const metadata: Metadata = {
   title: "0xArtcade",
   description: "0xArtcade Game Sandbox",
-  manifest: "/manifest.json",
-  themeColor: "#000000",
-  viewport: {
-    width: 'device-width',
-    initialScale: 1,
-    maximumScale: 1,
-    userScalable: false,
-    viewportFit: 'cover',
-  },
+  manifest: "/manifest.json" as string | undefined,
   other: {
     'apple-mobile-web-app-capable': 'yes',
     'apple-mobile-web-app-status-bar-style': 'black-translucent',
-    'viewport-fit': 'cover'
+    'viewport-fit': 'cover',
+    'mobile-web-app-capable': 'yes'
   },
 };
 
@@ -48,7 +50,7 @@ export default function RootLayout({
       <head>
         <title>{appName}</title>
       </head>
-      <body className="font-sans bg-black text-white min-h-screen overflow-y-auto">
+      <body className="font-sans bg-black text-white min-h-[-webkit-fill-available] overflow-y-auto">
         <div className="game-layout pwa-safe-area overflow-y-auto">
           {children}
         </div>

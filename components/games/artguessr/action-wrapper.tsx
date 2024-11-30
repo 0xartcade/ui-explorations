@@ -56,9 +56,9 @@ export function ActionWrapper({
           }}
         />
 
-        {/* Score grid overlay - delayed to show after the flash */}
+        {/* Updated score grid overlay */}
         <motion.div 
-          className="absolute inset-0 pointer-events-none grid grid-cols-2 grid-rows-2 gap-1"
+          className="absolute inset-0 pointer-events-none grid grid-cols-2 grid-rows-2 gap-2 p-2"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 2.0, duration: 0.3 }}
@@ -66,7 +66,11 @@ export function ActionWrapper({
           {Object.values(score?.answers || {}).map((isCorrect: boolean, index: number) => (
             <motion.div
               key={index}
-              className={`${isCorrect ? 'bg-green-500/20' : 'bg-red-500/20'}`}
+              className={`${
+                isCorrect 
+                  ? 'bg-green-500/40 border-2 border-green-500/60' 
+                  : 'bg-red-500/40 border-2 border-red-500/60'
+              } rounded-xl`}
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 2.0 + (index * 0.1) }}
