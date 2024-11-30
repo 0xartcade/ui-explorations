@@ -13,6 +13,11 @@ import { GAME_CONFIG } from './game-config'
 import { ActionWrapper } from './action-wrapper'
 import Head from 'next/head'
 
+type GeneratedGameData = {
+  nft: NFTMetadata;
+  tags: Tag[];
+};
+
 function transformToFullGameData(data: TemplateGameData): GameData {
   const titles = [...new Set(data.raw_data.map(nft => nft.questions.title))]
   const supplies = [...new Set(data.raw_data.map(nft => nft.questions.supply))]
@@ -29,7 +34,7 @@ function transformToFullGameData(data: TemplateGameData): GameData {
 }
 
 export default function GameInterface() {
-  const [gameData, setGameData] = useState<GameData | null>(null)
+  const [gameData, setGameData] = useState<GeneratedGameData | null>(null)
   const [gameState, setGameState] = useState<GameState>('playing')
   const [selectedTags, setSelectedTags] = useState<Record<Criteria, Tag | null>>({
     'TOTAL SUPPLY': null,
@@ -41,7 +46,7 @@ export default function GameInterface() {
   const [selectedColor, setSelectedColor] = useState<string | null>(null);
 
   useEffect(() => {
-    fetchGameData(ACTIVE_GAME.mode)
+    fetchGameData(ACTIVE_GAME.id)
       .then((data: TemplateGameData) => {
         const fullData = transformToFullGameData(data)
         setGameData(generateGameData(fullData))
@@ -80,7 +85,7 @@ export default function GameInterface() {
         ) as Record<Criteria, Tag | null>
       );
       
-      fetchGameData(ACTIVE_GAME.mode)
+      fetchGameData(ACTIVE_GAME.id)
         .then((data: TemplateGameData) => {
           const fullData = transformToFullGameData(data)
           setGameData(generateGameData(fullData))
