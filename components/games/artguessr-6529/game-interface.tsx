@@ -29,16 +29,17 @@ function transformToFullGameData(data: TemplateGameData): GameData {
 }
 
 export default function GameInterface() {
-  const [gameData, setGameData] = useState<{nft: NFTMetadata, tags: Tag[]} | null>(null)
-  const [gameState, setGameState] = useState<GameState>('playing')
+  const [gameData, setGameData] = useState<{
+    nft: NFTMetadata;
+    tags: Tag[];
+  } | null>(null);
+  const [gameState, setGameState] = useState<GameState>('playing');
   const [selectedTags, setSelectedTags] = useState<Record<Criteria, Tag | null>>(
     Object.fromEntries(
       GAME_CONFIG.questions.map(q => [q.id, null])
     ) as Record<Criteria, Tag | null>
-  )
-  const [dominantColor, setDominantColor] = useState<string>('#00FF00');
+  );
   const [selectedColor, setSelectedColor] = useState<string | null>(null);
-  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
     fetchGameData(ACTIVE_GAME.mode)
@@ -50,17 +51,6 @@ export default function GameInterface() {
         console.error('Failed to fetch game data:', error)
       })
   }, [])
-
-  useEffect(() => {
-    if (gameData?.nft.predominant_color) {
-      setDominantColor(gameData.nft.predominant_color);
-    }
-  }, [gameData]);
-
-  useEffect(() => {
-    // Force a re-layout after initial mount
-    setMounted(true);
-  }, []);
 
   const handleTagClick = (tag: Tag) => {
     setSelectedTags((prev) => ({
