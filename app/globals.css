@@ -13,7 +13,6 @@
   --artcade-pink-faded: rgba(255, 105, 180, 0.7);
   --sat: env(safe-area-inset-top);
   --sar: env(safe-area-inset-right);
-  --sab: env(safe-area-inset-bottom);
   --sal: env(safe-area-inset-left);
 }
 
@@ -31,30 +30,55 @@ body,
 body {
   background-color: #000000;
   font-family: 'var(--font-geist-sans)', sans-serif;
-  overflow: hidden; /* Prevent scrolling */
 }
 
 /* Game Layout */
 .game-layout {
   display: flex;
   flex-direction: column;
-  flex: 1;
   width: 100%;
-  height: 100%;
+  height: 100dvh;
   padding-top: var(--sat);
   padding-right: var(--sar);
   padding-bottom: var(--sab);
   padding-left: var(--sal);
-  min-height: 100vh;
-  min-height: -webkit-fill-available;
 }
 
 /* Responsive Styles for Standalone Mode on Mobile */
 @media screen and (max-width: 768px) and (display-mode: standalone) {
+  html {
+    height: 100vh;
+    height: -webkit-fill-available;
+  }
+  
   .game-layout {
-    width: 100%;
-    height: 100%;
-    overflow-y: auto;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 110vh;
+    height: -webkit-fill-available;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    padding: 0;
+    margin: 0;
+  }
+
+  .game-layout > .image-area {
+    margin: 3.5rem 0rem 0 0rem;
+  }
+
+  .game-layout > .guess-container {
+    margin: 0 0.75rem;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .game-layout > .action-container {
+    margin: 0 0.75rem env(safe-area-inset-bottom) 0.75rem;
   }
 }
 /* Button Styles */

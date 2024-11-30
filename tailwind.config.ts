@@ -90,7 +90,7 @@ export default {
 
   		},
   		boxShadow: {
-  			'glass': '0 0 1rem 0 rgba(0, 0, 0, 0.2), inset 0 0 .25rem 0 rgba(255, 255, 255, 0.1)',
+  			'glass': '0 0 10px 0 rgba(255, 255, 255, 0.1)',
   		},
   	}
   },
