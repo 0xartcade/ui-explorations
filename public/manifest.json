@@ -14,13 +14,13 @@
     "categories": ["games"],
     "icons": [
       {
-        "src": "/icons/0xArtcade-icon-lg.png",
+        "src": "/0xArtcade-icon-lg.png",
         "sizes": "192x192",
         "type": "image/png",
         "purpose": "any maskable"
       },
       {
-        "src": "/icons/0xArtcade-icon-sm.png",
+        "src": "/0xArtcade-icon-sm.png",
         "sizes": "512x512",
         "type": "image/png",
         "purpose": "any maskable"

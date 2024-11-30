@@ -56,8 +56,8 @@ export default function RootLayout({
       <head>
         <title>{appName}</title>
         <link rel="manifest" href="/manifest.json" crossOrigin="use-credentials" />
-        <link rel="icon" href="/icons/0xArtcade-icon-lg.png" />
-        <link rel="apple-touch-icon" href="/icons/0xArtcade-icon-lg.png" />
+        <link rel="icon" href="/0xArtcade-icon-lg.png" />
+        <link rel="apple-touch-icon" href="/0xArtcade-icon-lg.png" />
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
         <meta name="mobile-web-app-capable" content="yes" />
