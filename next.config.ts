@@ -1,5 +1,7 @@
-/** @type {import('next').NextConfig} */
+// import withPWA from '@ducanh2912/next-pwa';
+
 const nextConfig = {
+  // Remove the PWA configuration
   images: {
     remotePatterns: [
       {
@@ -14,15 +16,6 @@ const nextConfig = {
   },
   async headers() {
     return [
-      {
-        source: '/sw.js',
-        headers: [
-          {
-            key: 'Cache-Control',
-            value: 'public, max-age=0, must-revalidate',
-          }
-        ],
-      },
       {
         source: '/(.*)',
         headers: [
@@ -39,9 +32,9 @@ const nextConfig = {
             value: 'strict-origin-when-cross-origin',
           },
         ],
-      }
+      },
     ]
-  }
+  },
 };
 
 export default nextConfig;
