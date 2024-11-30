@@ -77,9 +77,6 @@ body {
     flex-direction: column;
   }
 
-  .game-layout > .action-container {
-    margin: 0 0.75rem env(safe-area-inset-bottom) 0.75rem;
-  }
 }
 /* Button Styles */
 .retro-button {
