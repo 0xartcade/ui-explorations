@@ -1,12 +1,10 @@
 "use client"
 
 import { motion } from 'framer-motion'
-import { useEffect, useCallback } from 'react'
 import Image from 'next/image'
 
 interface ActionWrapperProps {
   children: React.ReactNode
-  color: string
   selectedColor: string | null
   isPulsing: boolean
   blurhash?: string
@@ -21,7 +19,6 @@ interface ActionWrapperProps {
 
 export function ActionWrapper({
   children,
-  color = '#00FF00',
   selectedColor = null,
   isPulsing = false,
   blurhash,
@@ -29,10 +26,6 @@ export function ActionWrapper({
   gameState,
   score
 }: ActionWrapperProps): JSX.Element {
-  const getRgba = useCallback((color: string, alpha: number) => {
-    return `rgba(${parseInt(color.slice(1, 3), 16)}, ${parseInt(color.slice(3, 5), 16)}, ${parseInt(color.slice(5, 7), 16)}, ${alpha})`;
-  }, []);
-
   // Add submit flash and score grid animations
   const getSubmitOverlay = () => {
     if (gameState !== 'submitted') return null;
