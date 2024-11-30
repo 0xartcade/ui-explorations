@@ -18,19 +18,82 @@ export const viewport: Viewport = {
   initialScale: 1,
   maximumScale: 1,
   userScalable: false,
-  themeColor: "#000000",
   viewportFit: "cover",
+  themeColor: "#000000"
 };
+
+function ServiceWorkerRegister() {
+  return (
+    <>
+      <script
+        id="register-worker"
+        dangerouslySetInnerHTML={{
+          __html: `
+            if ('serviceWorker' in navigator) {
+              navigator.serviceWorker.register('/sw.js')
+                .then(registration => {
+                  console.log('Service Worker registered:', registration);
+                })
+                .catch(error => {
+                  console.error('Service Worker registration failed:', error);
+                });
+            }
+          `,
+        }}
+      />
+      <script
+        id="pwa-install-prompt"
+        dangerouslySetInnerHTML={{
+          __html: `
+            let deferredPrompt;
+            window.addEventListener('beforeinstallprompt', (e) => {
+              console.log('👋 Install prompt event fired');
+              // Prevent Chrome 67 and earlier from automatically showing the prompt
+              e.preventDefault();
+              // Stash the event so it can be triggered later
+              deferredPrompt = e;
+              
+              // For testing, trigger prompt after 3 seconds
+              if (window.location.hostname === 'localhost') {
+                setTimeout(() => {
+                  console.log('🚀 Triggering install prompt...');
+                  deferredPrompt.prompt();
+                  deferredPrompt.userChoice.then((choiceResult) => {
+                    console.log('👉 User choice:', choiceResult.outcome);
+                    if (choiceResult.outcome === 'accepted') {
+                      console.log('✅ User accepted the install prompt');
+                    }
+                    deferredPrompt = null;
+                  });
+                }, 3000);
+              }
+            });
+
+            // Log when PWA is successfully installed
+            window.addEventListener('appinstalled', (evt) => {
+              console.log('🎉 Application installed successfully');
+            });
+          `,
+        }}
+      />
+    </>
+  );
+}
 
 export const metadata: Metadata = {
   title: "0xArtcade",
   description: "0xArtcade Game Sandbox",
-  manifest: "/manifest.json" as string | undefined,
-  other: {
-    'apple-mobile-web-app-capable': 'yes',
-    'apple-mobile-web-app-status-bar-style': 'black-translucent',
-    'viewport-fit': 'cover',
-    'mobile-web-app-capable': 'yes'
+  manifest: "/manifest.json",
+  icons: {
+    apple: [
+      { url: "/icons/0xArtcade-icon-lg.png", sizes: "192x192", type: "image/png" },
+      { url: "/icons/0xArtcade-icon-sm.png", sizes: "512x512", type: "image/png" }
+    ],
+  },
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "black-translucent",
+    title: "0xArtcade",
   },
 };
 
@@ -39,12 +102,6 @@ export default function RootLayout({
 }: {
   children: React.ReactNode
 }) {
-  console.log('Environment:', {
-    NODE_ENV: process.env.NODE_ENV,
-    VERCEL_ENV: process.env.VERCEL_ENV,
-    VERCEL_URL: process.env.VERCEL_URL
-  });
-
   const appName = process.env.NODE_ENV === 'development'
     ? '0xArtcade (Local)'
     : process.env.VERCEL_ENV === 'production'
@@ -55,12 +112,7 @@ export default function RootLayout({
     <html lang="en" className={`bg-black ${geistSans.variable} ${geistMono.variable}`}>
       <head>
         <title>{appName}</title>
-        <link rel="manifest" href="/manifest.json" crossOrigin="use-credentials" />
-        <link rel="icon" href="/0xArtcade-icon-lg.png" />
-        <link rel="apple-touch-icon" href="/0xArtcade-icon-lg.png" />
-        <meta name="apple-mobile-web-app-capable" content="yes" />
-        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-        <meta name="mobile-web-app-capable" content="yes" />
+        <ServiceWorkerRegister />
       </head>
       <body className="font-sans bg-black text-white min-h-[-webkit-fill-available] overflow-y-auto">
         <div className="game-layout pwa-safe-area overflow-y-auto">
