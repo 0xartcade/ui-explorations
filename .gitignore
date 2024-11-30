@@ -34,10 +34,12 @@ yarn-error.log*
 
 # vercel
 .vercel
+.vercel
+.env*.local
 
 # typescript
 *.tsbuildinfo
 next-env.d.ts
 
-.vercel
-.env*.local
+# cursor
+.cursorignore
