@@ -25,9 +25,13 @@ export const metadata: Metadata = {
   title: "0xArtcade",
   description: "0xArtcade Game Sandbox",
   icons: {
+    icon: [
+      { url: "/0xArtcade-icon-192.png", sizes: "192x192", type: "image/png" },
+      { url: "/0xArtcade-icon-512.png", sizes: "512x512", type: "image/png" }
+    ],
     apple: [
-      { url: "/icons/0xArtcade-icon-192.png", sizes: "192x192", type: "image/png" },
-      { url: "/icons/0xArtcade-icon-512.png", sizes: "512x512", type: "image/png" }
+      { url: "/0xArtcade-icon-192.png", sizes: "192x192", type: "image/png" },
+      { url: "/0xArtcade-icon-512.png", sizes: "512x512", type: "image/png" }
     ],
   },
   appleWebApp: {
