@@ -25,7 +25,7 @@ interface GuessingInterfaceProps {
   onCriteriaClick: (criteria: Criteria) => void
 }
 
-const truncateText = (text: string, limit: number = 16) => {
+const truncateText = (text: string, limit: number = 22) => {
   return text.length > limit ? text.slice(0, limit) + '...' : text;
 };
 
@@ -70,7 +70,7 @@ export function GuessingInterface({
               (!selectedTags[tag.criteria]) && (
                 <motion.button
                   key={tag.id}
-                  className="px-2 py-1 rounded-full font-semibold relative overflow-hidden tag-button hover:scale-105 bg-tint-black/35 backdrop-blur-2xl border border-white/10 text-xs md:text-s"
+                  className="px-3 py-1 rounded-full font-semibold relative overflow-hidden tag-button hover:scale-105 bg-tint-black/35 backdrop-blur-2xl border border-white/10 text-sm md:text-xs"
                   style={{
                     color: getQuestionColor(tag.criteria),
                     borderColor: getQuestionColor(tag.criteria),
@@ -103,7 +103,7 @@ export function GuessingInterface({
             <div
               key={question.id}
               id="answer-cells"
-              className="h-8 rounded-xl border flex items-center justify-center overflow-hidden bg-tint-black/80 backdrop-blur-md text-base"
+              className="h-8 rounded-xl border flex items-center justify-center overflow-hidden bg-tint-black/80 backdrop-blur-md"
               style={{
                 borderColor: gameState === 'submitted' ? 'transparent' : question.color,
                 borderWidth: 1,
@@ -117,7 +117,7 @@ export function GuessingInterface({
                     initial={{ opacity: 0, scale: 0.8 }}
                     animate={{ opacity: 1, scale: 1 }}
                     exit={{ opacity: 0, scale: 0.8 }}
-                    className="answer-text w-full h-full flex items-center justify-center px-2 py-1 rounded-lg text-xs font-semibold uppercase relative truncate"
+                    className="answer-text w-full h-full flex items-center justify-center px-2 py-1 rounded-lg text-xs md:text-xs font-semibold uppercase relative truncate"
                     style={{
                       backgroundColor: gameState === 'submitted'
                         ? selectedTags[question.id]?.isCorrect
@@ -151,7 +151,7 @@ export function GuessingInterface({
                     className="answer-text w-full h-full flex items-center justify-center"
                   >
                     <span
-                      className="answer-text text-xs font-semibold opacity-1 text-center px-1 uppercase"
+                      className="answer-text text-lg md:text-xs font-semibold opacity-1 text-center px-1 uppercase"
                       style={{ color: question.color }}
                     >
                       {question.label}

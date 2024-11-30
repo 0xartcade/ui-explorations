@@ -11,6 +11,10 @@
   --artcade-tangerine-faded: rgba(255, 61, 93, 0.7);
   --artcade-yellow-faded: rgba(253, 236, 207, 0.7);
   --artcade-pink-faded: rgba(255, 105, 180, 0.7);
+  --sat: env(safe-area-inset-top);
+  --sar: env(safe-area-inset-right);
+  --sab: env(safe-area-inset-bottom);
+  --sal: env(safe-area-inset-left);
 }
 
 /* Ensure html, body, and #__next take full height */
@@ -35,10 +39,14 @@ body {
   display: flex;
   flex-direction: column;
   flex: 1;
-  padding-top: env(safe-area-inset-top);
-  padding-bottom: env(safe-area-inset-bottom);
   width: 100%;
   height: 100%;
+  padding-top: var(--sat);
+  padding-right: var(--sar);
+  padding-bottom: var(--sab);
+  padding-left: var(--sal);
+  min-height: 100vh;
+  min-height: -webkit-fill-available;
 }
 
 /* Responsive Styles for Standalone Mode on Mobile */
@@ -48,13 +56,7 @@ body {
     height: 100%;
     overflow-y: auto;
   }
-  
-  .tag-button,
-  .answer-text {
-    font-size: 1.5rem !important;
-  }
 }
-
 /* Button Styles */
 .retro-button {
   position: relative;
@@ -130,29 +132,6 @@ body {
   cursor: grab;
 }
 
-/* Utility Classes */
-@layer utilities {
-  /* Fullscreen on Mobile */
-  .mobile-full {
-    width: 100vw;
-    height: 100vh;
-    height: -webkit-fill-available;
-  }
-
-  /* Safe Area Padding for Standalone PWAs */
-  .pwa-safe-area {
-    padding-top: env(safe-area-inset-top);
-    padding-bottom: env(safe-area-inset-bottom);
-    padding-left: env(safe-area-inset-left);
-    padding-right: env(safe-area-inset-right);
-  }
-
-  /* Additional Artcade Styles */
-  .artcade-faded {
-    /* Variables already defined in :root */
-  }
-}
-
 /* Component Layer Styles */
 @layer components {
   .glass-panel {
@@ -167,10 +146,6 @@ body {
 }
 
 /* Layout Ready Class */
-.layout-ready {
-  height: 100%;
-  min-height: -webkit-fill-available;
-}
 
 /* Image Container Styles */
 .image-container {
@@ -199,4 +174,3 @@ body {
 .animate-slide-up {
   animation: slide-up 0.3s ease-out;
 }
-

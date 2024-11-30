@@ -71,7 +71,8 @@ export default {
   			sm: 'calc(var(--radius) - 4px)'
   		},
   		fontSize: {
-  			'xs': ['0.7rem', { lineHeight: '1.1rem' }],  // Example custom size
+  			'xs': ['.75rem', { lineHeight: '1.1rem' }],
+			'sm': ['1.1rem', { lineHeight: '1.1rem' }],
   		},
   		fontFamily: {
   			monoton: ['Monoton', 'cursive'],
