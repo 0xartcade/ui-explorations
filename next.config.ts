@@ -1,23 +1,15 @@
-import withPWA from 'next-pwa';
+import withPWA from '@ducanh2912/next-pwa';
 
 const nextConfig = withPWA({
   dest: 'public',
   register: true,
-  skipWaiting: true,
   disable: process.env.NODE_ENV === 'development',
-  runtimeCaching: [
-    {
-      urlPattern: /^https:\/\/.*\/(manifest\.json|icons\/.*\.png)$/,
-      handler: 'CacheFirst',
-      options: {
-        cacheName: 'pwa-assets',
-        expiration: {
-          maxEntries: 10,
-          maxAgeSeconds: 60 * 60 * 24 * 365 // 1 year
-        }
-      }
-    }
-  ],
+  cacheOnFrontEndNav: true,
+  reloadOnOnline: true,
+  workboxOptions: {
+    skipWaiting: true,
+    disableDevLogs: true,
+  }
 })({
   images: {
     remotePatterns: [
