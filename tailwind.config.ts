@@ -56,6 +56,10 @@ export default {
   				pink: '#FF3DDC',
   				tangerine: '#FF3D5D',
   				yellow: '#FDECCF',
+  			},
+  			tint: {
+  				white: 'rgba(255, 255, 255, var(--tw-bg-opacity))',
+  				black: 'rgba(0, 0, 0, var(--tw-bg-opacity))',
   			}
   		},
   		backgroundImage: {
@@ -73,6 +77,19 @@ export default {
   			monoton: ['Monoton', 'cursive'],
   			sans: ['var(--font-geist-sans)', 'system-ui'],
   			mono: ['var(--font-geist-mono)', 'monospace'],
+  		},
+  		backdropBlur: {
+  			'xs': '2px',
+  			'sm': '4px',
+  			'md': '8px',
+  			'lg': '12px',
+  			'xl': '16px',
+  			'2xl': '24px',
+  			'3xl': '30px',
+
+  		},
+  		boxShadow: {
+  			'glass': '0 0 1rem 0 rgba(0, 0, 0, 0.2), inset 0 0 .25rem 0 rgba(255, 255, 255, 0.1)',
   		},
   	}
   },

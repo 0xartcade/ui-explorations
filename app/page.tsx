@@ -3,10 +3,10 @@ import { GameArea } from "@/components/game-area";
 
 export default function Home() {
   return (
-    <main className="flex min-h-screen bg-black">
+    <main className="flex min-h-screen bg-black artcade-main">
       {/* Information Sidebar */}
       <aside 
-        className="hidden md:flex md:w-1/2 flex-col items-center justify-center space-y-8 p-8"
+        className="hidden md:flex md:w-1/2 flex-col items-center justify-center space-y-8 p-8 artcade-sidebar"
         data-testid="app-information"
       >
         <Image
@@ -15,13 +15,13 @@ export default function Home() {
           width={600}
           height={200}
           priority
-          className="w-auto h-auto"
+          className="w-auto h-auto artcade-logo"
         />
-        <div className="space-y-4 text-center">
-          <h1 className="text-white text-2xl font-semibold">
+        <div className="space-y-4 text-center artcade-info">
+          <h1 className="text-white text-2xl font-semibold artcade-title">
             Welcome to the 0xArtcade Game Sandbox
           </h1>
-          <p className="text-white/80 text-base max-w-md leading-relaxed">
+          <p className="text-white/80 text-base max-w-md leading-relaxed artcade-description">
             You can use this sandbox to prototype and preview your game in mobile environment. 
             This screen will disappear and your app will become full-screen when adding to the 
             home screen on iOS and Android.
@@ -31,7 +31,7 @@ export default function Home() {
 
       {/* Game Preview Section */}
       <section 
-        className="w-full md:w-1/2 flex items-center justify-center"
+        className="w-full md:w-1/2 flex items-center justify-center artcade-preview-section"
         data-testid="app-preview"
       >
         <div className="relative h-full w-full flex items-center justify-center">

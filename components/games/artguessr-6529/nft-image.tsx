@@ -5,14 +5,14 @@ interface NFTImageProps {
   alt: string
 }
 
-export function NFTImage({ src, alt }: NFTImageProps) {
+export function NFTImage({ src, alt }: NFTImageProps): JSX.Element {
   return (
-    <div className="absolute inset-0 w-full h-full">
+    <div className="absolute inset-0 w-full h-full rounded-2xl overflow-hidden artcade-nft-container">
       <Image
         src={src}
         alt={alt}
         fill
-        className="w-full h-full object-cover"
+        className="w-full h-full object-cover scale-110 artcade-nft-image"
         sizes="100vw"
         priority
         quality={90}

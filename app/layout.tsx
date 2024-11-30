@@ -26,10 +26,9 @@ export const metadata: Metadata = {
     viewportFit: 'cover',
   },
   other: {
-    'mobile-web-app-capable': 'yes',
     'apple-mobile-web-app-capable': 'yes',
     'apple-mobile-web-app-status-bar-style': 'black-translucent',
-    'apple-mobile-web-app-title': '0xArtcade',
+    'viewport-fit': 'cover'
   },
 };
 

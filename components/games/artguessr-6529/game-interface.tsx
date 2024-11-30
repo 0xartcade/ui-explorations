@@ -11,6 +11,7 @@ import { GameData as TemplateGameData } from '../game-template/game-types'
 import { GameData, NFTMetadata, Tag, Criteria, GameState } from '@/types/game-types'
 import { GAME_CONFIG } from './game-config'
 import { ActionWrapper } from './action-wrapper'
+import Head from 'next/head'
 
 function transformToFullGameData(data: TemplateGameData): GameData {
   const titles = [...new Set(data.raw_data.map(nft => nft.questions.title))]
@@ -37,6 +38,7 @@ export default function GameInterface() {
   )
   const [dominantColor, setDominantColor] = useState<string>('#00FF00');
   const [selectedColor, setSelectedColor] = useState<string | null>(null);
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
     fetchGameData(ACTIVE_GAME.mode)
@@ -44,7 +46,7 @@ export default function GameInterface() {
         const fullData = transformToFullGameData(data)
         setGameData(generateGameData(fullData))
       })
-      .catch(error => {
+      .catch((error: Error) => {
         console.error('Failed to fetch game data:', error)
       })
   }, [])
@@ -54,6 +56,11 @@ export default function GameInterface() {
       setDominantColor(gameData.nft.predominant_color);
     }
   }, [gameData]);
+
+  useEffect(() => {
+    // Force a re-layout after initial mount
+    setMounted(true);
+  }, []);
 
   const handleTagClick = (tag: Tag) => {
     setSelectedTags((prev) => ({
@@ -84,7 +91,7 @@ export default function GameInterface() {
           setGameData(generateGameData(fullData))
           setGameState('playing');
         })
-        .catch(error => {
+        .catch((error: Error) => {
           console.error('Failed to fetch game data:', error)
         })
     }
@@ -114,54 +121,70 @@ export default function GameInterface() {
   }
 
   return gameData ? (
-    <ActionWrapper 
-      color={dominantColor}
-      selectedColor={selectedColor}
-      isPulsing={true}
-      blurhash={gameData.nft.blurhash}
-      imageUrl={gameData.nft.image_url}
-    >
-      <div className="game-layout flex flex-col h-screen max-h-screen overflow-hidden md:rounded-3xl backdrop-blur-md mb-1"
-        style={{ 
-          backgroundColor: 'rgba(0, 0, 0, 0)',
-          paddingBottom: 'env(safe-area-inset-bottom)'
-        }}>
-          
-        {/* IMAGE CONTAINER */}
-        <div className="relative w-full h-[45%] overflow-hidden">
-          <div className="absolute inset-0 md:rounded-2xl overflow-hidden" style={{ top: '15px' }}>
-            <NFTImage
-              src={gameData.nft.image_url}
-              alt={gameData.nft.questions.title}
+    <>
+      <Head>
+        <meta 
+          name="theme-color" 
+          content="transparent" 
+        />
+        <meta 
+          name="apple-mobile-web-app-status-bar-style" 
+          content="transparent" 
+        />
+      </Head>
+      <ActionWrapper 
+        color={dominantColor}
+        selectedColor={selectedColor}
+        isPulsing={true}
+        blurhash={gameData.nft.blurhash}
+        imageUrl={gameData.nft.image_url}
+        gameState={gameState}
+        score={
+          gameState === 'submitted' 
+            ? {
+                correct: Object.values(selectedTags).filter((tag) => tag?.isCorrect).length,
+                total: GAME_CONFIG.questions.length,
+                answers: GAME_CONFIG.questions.map(question => 
+                  selectedTags[question.id]?.isCorrect ?? false
+                )
+              }
+            : undefined
+        }
+      >
+        <div className="game-layout flex flex-col h-full">
+          {/* IMAGE CONTAINER */}
+          <div className="image-area glass-panel relative w-full h-[45%] overflow-hiddenmt-2 md:mt-0">
+            <div className="absolute inset-1 md:rounded-2xl overflow-hidden">
+              <NFTImage
+                src={gameData.nft.image_url}
+                alt={gameData.nft.questions.title}
+              />
+            </div>
+          </div>
+
+          {/* GUESS CONTAINER */}
+          <div className="guess-container flex-1 flex flex-col pt-2 min-h-0 overflow-hidden"> 
+            <GuessingInterface
+              tags={gameData.tags}
+              selectedTags={selectedTags}
+              gameState={gameState}
+              onTagClick={handleTagClick}
+              onReset={handleReset}
+              onCriteriaClick={handleCriteriaClick}
+            />
+          </div>
+
+          {/* ACTION CONTAINER - adjusted margins and background */}
+          <div className="action-container bg-transparent px-2 py-2 backdrop-blur-sm">
+            <ActionButton
+              gameState={gameState}
+              onClick={handleSubmit}
+              disabled={gameState === 'playing' && Object.values(selectedTags).some((value) => value === null)}
             />
           </div>
         </div>
-
-        {/* GUESS CONTAINER */}
-        <div className="guess-container flex-1 min-h-0 px-1 py-2 flex flex-col rounded-xl" 
-          style={{ 
-            backgroundColor: 'rgba(0, 0, 0, 0)',
-          }}>
-          <GuessingInterface
-            tags={gameData.tags}
-            selectedTags={selectedTags}
-            gameState={gameState}
-            onTagClick={handleTagClick}
-            onReset={handleReset}
-            onCriteriaClick={handleCriteriaClick}
-          />
-        </div>
-
-        {/* ACTION CONTAINER */}
-        <div className="action-container h-22 px-2 mt-auto pb-[1px]">
-          <ActionButton
-            gameState={gameState}
-            onClick={handleSubmit}
-            disabled={gameState === 'playing' && Object.values(selectedTags).some((value) => value === null)}
-          />
-        </div>
-      </div>
-    </ActionWrapper>
+      </ActionWrapper>
+    </>
   ) : null;
 }
 

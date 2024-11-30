@@ -1,3 +1,6 @@
+// TypeScript configuration file that specifies compiler options and settings
+// for the project. Controls how TypeScript compiles code, handles module imports,
+// and enforces type checking rules for Next.js development.
 {
   "compilerOptions": {
     "target": "ES2017",
