@@ -46,14 +46,10 @@ export default function RootLayout({
   return (
     <html lang="en" className={`bg-black ${geistSans.variable} ${geistMono.variable}`}>
       <head>
-        <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-        <meta name="apple-mobile-web-app-capable" content="yes" />
-        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
         <title>{appName}</title>
       </head>
-      <body className="bg-black min-h-screen font-sans">
-        <div className="ios-status-bar-background" />
-        <div className="game-layout flex flex-col h-full">
+      <body className="font-sans bg-black text-white min-h-screen overflow-y-auto">
+        <div className="game-layout pwa-safe-area overflow-y-auto">
           {children}
         </div>
       </body>
