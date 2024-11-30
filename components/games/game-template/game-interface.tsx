@@ -1,4 +1,6 @@
-export function GameTemplate() {
+"use client"
+
+export default function GameTemplate() {
     return (
       <div className="flex flex-col items-center justify-center h-full space-y-4">
         <h1 className="text-white text-2xl font-semibold">
@@ -9,4 +11,4 @@ export function GameTemplate() {
         </p>
       </div>
     );
-  }
+}

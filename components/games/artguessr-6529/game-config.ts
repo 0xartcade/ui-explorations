@@ -3,28 +3,28 @@ export const GAME_CONFIG = {
       {
         id: 'TOTAL SUPPLY',
         label: 'Total Supply',
-        color: '#4CAF50',
+        color: 'var(--artcade-aqua-faded)',
         dataField: 'supply',
         answersField: 'supplies'
       },
       {
         id: 'SEASON',
         label: 'Season',
-        color: '#2196F3',
+        color: 'var(--artcade-pink-faded)',
         dataField: 'season',
         answersField: 'seasons'
       },
       {
         id: 'ARTIST NAME',
         label: 'Artist Name',
-        color: '#FF9800',
+        color: 'var(--artcade-tangerine-faded)',
         dataField: 'artist',
         answersField: 'artists'
       },
       {
         id: 'ART NAME',
         label: 'Art Name',
-        color: '#E91E63',
+        color: 'var(--artcade-yellow-faded)',
         dataField: 'title',
         answersField: 'titles'
       }

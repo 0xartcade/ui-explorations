@@ -4,7 +4,7 @@ import { useState, useMemo } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { X } from 'lucide-react'
 import { GAME_CONFIG, getQuestionColor } from './game-config'
-import { Tag, Criteria, GameState } from '@/types/game-types'
+import { Tag, Criteria, GameState } from '../../../types/game-types'
 
 const HOVER_GRADIENT = `
   linear-gradient(
@@ -25,6 +25,10 @@ interface GuessingInterfaceProps {
   onCriteriaClick: (criteria: Criteria) => void
 }
 
+const truncateText = (text: string, limit: number = 16) => {
+  return text.length > limit ? text.slice(0, limit) + '...' : text;
+};
+
 export function GuessingInterface({
   tags,
   selectedTags,
@@ -32,7 +36,7 @@ export function GuessingInterface({
   onTagClick,
   onReset,
   onCriteriaClick,
-}: GuessingInterfaceProps) {
+}: GuessingInterfaceProps): JSX.Element {
   const [focusedCriteria, setFocusedCriteria] = useState<Criteria | null>(null);
   const randomizedTags = useMemo(() => 
     [...tags].sort(() => Math.random() - 0.5)
@@ -51,8 +55,8 @@ export function GuessingInterface({
   }, [randomizedTags, focusedCriteria]);
 
   return (
-    <div className="guessing-layout flex-grow flex flex-col relative py-0.5" style={{ backgroundColor: 'rgba(0, 0, 0, 0.9)' }}>
-      <div className="tags-container flex-1 flex flex-wrap content-center gap-1 justify-center overflow-y-auto mb-0.5 px-1" style={{ backgroundColor: 'rgba(0, 0, 0, 0.9)' }}>
+    <div className="artcade-guessing-layout flex flex-col h-full">
+      <div className="options-area glass-panel flex-1 min-h-0 flex flex-wrap content-center gap-1 justify-center overflow-y-aut p-3 mb-2">
         {gameState === 'submitted' ? (
           <div className="text-center text-white">
             <p className="text-xl font-bold mb-2">Your Score</p>
@@ -62,17 +66,15 @@ export function GuessingInterface({
           </div>
         ) : (
           <AnimatePresence>
-            {visibleTags.map((tag) => (
+            {visibleTags.map((tag: Tag) => (
               (!selectedTags[tag.criteria]) && (
                 <motion.button
                   key={tag.id}
-                  className="px-2 py-1 rounded-full text-xs font-semibold relative overflow-hidden tag-button hover:scale-105"
+                  className="px-2 py-1 rounded-full font-semibold relative overflow-hidden tag-button hover:scale-105 bg-tint-black/35 backdrop-blur-2xl border border-white/10 text-xs md:text-xs"
                   style={{
-                    backgroundColor: 'rgba(0, 0, 0, 0.75)',
                     color: getQuestionColor(tag.criteria),
                     borderColor: getQuestionColor(tag.criteria),
                     borderWidth: 1,
-                    transition: 'all 0.2s ease',
                   }}
                   whileHover={{
                     background: HOVER_GRADIENT,
@@ -88,78 +90,78 @@ export function GuessingInterface({
                     transition: { duration: 0.2 }
                   }}
                 >
-                  {tag.value}
+                  {truncateText(tag.value)}
                 </motion.button>
               )
             ))}
           </AnimatePresence>
         )}
       </div>
-      <div className="answer-grid grid grid-cols-2 gap-1 mt-auto" style={{ backgroundColor: 'rgba(0, 0, 0, 0.9)' }}>
-        {GAME_CONFIG.questions.map((question) => (
-          <div
-            key={question.id}
-            className="answer-cell h-8 rounded-full border flex items-center justify-center overflow-hidden transition-colors duration-200 relative"
-            style={{
-              borderColor: question.color,
-              backgroundColor: selectedTags[question.id]
-                ? question.color
-                : 'rgba(0, 0, 0, 0.9)',
-              borderWidth: gameState === 'submitted' ? 2 : 1,
-            }}
-            onClick={() => handleCriteriaClick(question.id as Criteria)}
-          >
-            <AnimatePresence mode="wait">
-              {selectedTags[question.id] ? (
-                <motion.div
-                  key={selectedTags[question.id]?.id}
-                  initial={{ opacity: 0, scale: 0.8 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0, scale: 0.8 }}
-                  className="w-full h-full flex items-center justify-center px-2 py-1 rounded-full text-xs font-semibold uppercase relative"
-                  style={{
-                    backgroundColor: gameState === 'submitted'
-                      ? selectedTags[question.id]?.isCorrect
-                        ? `${question.color}BF`
-                        : '#FF0000BF'
-                      : question.color,
-                    color: 'white',
-                    transition: 'background-color 0.2s ease',
-                  }}
-                >
-                  {selectedTags[question.id]?.value}
-                  {gameState === 'playing' && (
-                    <button
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        onReset(question.id as Criteria);
-                      }}
-                      className="absolute right-1 top-1/2 -translate-y-1/2 w-4 h-4 flex items-center justify-center z-10 bg-black bg-opacity-50 rounded-full"
-                      aria-label={`Reset ${question.label} selection`}
-                    >
-                      <X size={8} className="text-white" />
-                    </button>
-                  )}
-                </motion.div>
-              ) : (
-                <motion.div
-                  key={`empty-${question.id}`}
-                  initial={{ opacity: 0, scale: 0.8 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0, scale: 0.8 }}
-                  className="w-full h-full flex items-center justify-center"
-                >
-                  <span
-                    className="text-xs font-semibold opacity-70 text-center px-1 uppercase"
-                    style={{ color: question.color }}
+      <div className="answers-area glass-panel p-2">
+        <div className="grid grid-cols-2 gap-1">
+          {GAME_CONFIG.questions.map((question) => (
+            <div
+              key={question.id}
+              id="answer-cells"
+              className="h-8 rounded-xl border flex items-center justify-center overflow-hidden bg-tint-black/80 backdrop-blur-md text-base"
+              style={{
+                borderColor: gameState === 'submitted' ? 'transparent' : question.color,
+                borderWidth: 1,
+              }}
+              onClick={() => handleCriteriaClick(question.id as Criteria)}
+            >
+              <AnimatePresence mode="wait">
+                {selectedTags[question.id] ? (
+                  <motion.div
+                    key={selectedTags[question.id]?.id}
+                    initial={{ opacity: 0, scale: 0.8 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0, scale: 0.8 }}
+                    className="answer-text w-full h-full flex items-center justify-center px-2 py-1 rounded-lg text-xs font-semibold uppercase relative truncate"
+                    style={{
+                      backgroundColor: gameState === 'submitted'
+                        ? selectedTags[question.id]?.isCorrect
+                          ? 'rgba(34, 197, 94, 0.4)'
+                          : 'rgba(239, 68, 68, 0.4)'
+                        : question.color,
+                      color: 'white',
+                      transition: 'background-color 0.2s ease',
+                    }}
                   >
-                    {question.label}
-                  </span>
-                </motion.div>
-              )}
-            </AnimatePresence>
-          </div>
-        ))}
+                    {truncateText(selectedTags[question.id]?.value || '')}
+                    {gameState === 'playing' && (
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          onReset(question.id as Criteria);
+                        }}
+                        className="absolute right-1 top-1/2 -translate-y-1/2 w-4 h-4 flex items-center justify-center z-10 bg-black bg-opacity-50 rounded-full"
+                        aria-label={`Reset ${question.label} selection`}
+                      >
+                        <X size={8} className="text-white" />
+                      </button>
+                    )}
+                  </motion.div>
+                ) : (
+                  <motion.div
+                    key={`empty-${question.id}`}
+                    initial={{ opacity: 0, scale: 0.8 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0, scale: 0.8 }}
+                    className="answer-text w-full h-full flex items-center justify-center"
+                  >
+                    <span
+                      className="answer-text text-xs font-semibold opacity-1 text-center px-1 uppercase"
+                      style={{ color: question.color }}
+                    >
+                      {question.label}
+                    </span>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   )
