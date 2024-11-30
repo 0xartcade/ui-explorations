@@ -93,6 +93,7 @@ export function ActionWrapper({
             className="object-cover blur-lg opacity-50"
             quality={1}
             priority={false}
+            unoptimized={imageUrl?.includes('googleusercontent.com')}
             placeholder={blurhash ? "blur" : undefined}
             blurDataURL={blurhash}
           />

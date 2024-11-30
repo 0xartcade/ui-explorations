@@ -1,14 +1,7 @@
-import withPWA from 'next-pwa';
+// import withPWA from '@ducanh2912/next-pwa';
 
-const nextConfig = withPWA({
-  dest: 'public',
-  register: true,
-  skipWaiting: true,
-  disable: process.env.NODE_ENV === 'development',
-  runtimeCaching: [
-    // Add runtime caching strategies if needed
-  ],
-})({
+const nextConfig = {
+  // Remove the PWA configuration
   images: {
     remotePatterns: [
       {
@@ -21,6 +14,27 @@ const nextConfig = withPWA({
       },
     ],
   },
-});
+  async headers() {
+    return [
+      {
+        source: '/(.*)',
+        headers: [
+          {
+            key: 'X-Content-Type-Options',
+            value: 'nosniff',
+          },
+          {
+            key: 'X-Frame-Options',
+            value: 'DENY',
+          },
+          {
+            key: 'Referrer-Policy',
+            value: 'strict-origin-when-cross-origin',
+          },
+        ],
+      },
+    ]
+  },
+};
 
 export default nextConfig;

@@ -18,20 +18,27 @@ export const viewport: Viewport = {
   initialScale: 1,
   maximumScale: 1,
   userScalable: false,
-  themeColor: "#000000",
-  viewportFit: "cover",
+  viewportFit: "cover"
 };
 
 export const metadata: Metadata = {
   title: "0xArtcade",
   description: "0xArtcade Game Sandbox",
-  manifest: "/manifest.json" as string | undefined,
-  other: {
-    'apple-mobile-web-app-capable': 'yes',
-    'apple-mobile-web-app-status-bar-style': 'black-translucent',
-    'viewport-fit': 'cover',
-    'mobile-web-app-capable': 'yes'
+  icons: {
+    icon: [
+      { url: "/0xArtcade-icon-192.png", sizes: "192x192", type: "image/png" },
+      { url: "/0xArtcade-icon-512.png", sizes: "512x512", type: "image/png" }
+    ],
+    apple: [
+      { url: "/0xArtcade-icon-192.png", sizes: "192x192", type: "image/png" },
+      { url: "/0xArtcade-icon-512.png", sizes: "512x512", type: "image/png" }
+    ],
   },
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "black-translucent",
+    title: "0xArtcade"
+  }
 };
 
 export default function RootLayout({
