@@ -8,15 +8,10 @@ import { generateGameData } from './game-utils'
 import { fetchGameData } from '@/utils/game-data'
 import { ACTIVE_GAME } from '@/config/active-game'
 import { GameData as TemplateGameData } from '../game-template/game-types'
-import { GameData, Tag, Criteria, GameState } from '@/types/game-types'
+import { GameData, NFTMetadata, Tag, Criteria, GameState } from '@/types/game-types'
 import { GAME_CONFIG } from './game-config'
 import { ActionWrapper } from './action-wrapper'
 import Head from 'next/head'
-
-type GeneratedGameData = {
-  nft: NFTMetadata;
-  tags: Tag[];
-};
 
 function transformToFullGameData(data: TemplateGameData): GameData {
   const titles = [...new Set(data.raw_data.map(nft => nft.questions.title))]
@@ -34,19 +29,19 @@ function transformToFullGameData(data: TemplateGameData): GameData {
 }
 
 export default function GameInterface() {
-  const [gameData, setGameData] = useState<GeneratedGameData | null>(null)
+  const [gameData, setGameData] = useState<{nft: NFTMetadata, tags: Tag[]} | null>(null)
   const [gameState, setGameState] = useState<GameState>('playing')
-  const [selectedTags, setSelectedTags] = useState<Record<Criteria, Tag | null>>({
-    'TOTAL SUPPLY': null,
-    'SEASON': null,
-    'ARTIST NAME': null,
-    'ART NAME': null
-  })
+  const [selectedTags, setSelectedTags] = useState<Record<Criteria, Tag | null>>(
+    Object.fromEntries(
+      GAME_CONFIG.questions.map(q => [q.id, null])
+    ) as Record<Criteria, Tag | null>
+  )
   const [dominantColor, setDominantColor] = useState<string>('#00FF00');
   const [selectedColor, setSelectedColor] = useState<string | null>(null);
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-    fetchGameData(ACTIVE_GAME.id)
+    fetchGameData(ACTIVE_GAME.mode)
       .then((data: TemplateGameData) => {
         const fullData = transformToFullGameData(data)
         setGameData(generateGameData(fullData))
@@ -61,6 +56,11 @@ export default function GameInterface() {
       setDominantColor(gameData.nft.predominant_color);
     }
   }, [gameData]);
+
+  useEffect(() => {
+    // Force a re-layout after initial mount
+    setMounted(true);
+  }, []);
 
   const handleTagClick = (tag: Tag) => {
     setSelectedTags((prev) => ({
@@ -85,7 +85,7 @@ export default function GameInterface() {
         ) as Record<Criteria, Tag | null>
       );
       
-      fetchGameData(ACTIVE_GAME.id)
+      fetchGameData(ACTIVE_GAME.mode)
         .then((data: TemplateGameData) => {
           const fullData = transformToFullGameData(data)
           setGameData(generateGameData(fullData))
@@ -133,7 +133,6 @@ export default function GameInterface() {
         />
       </Head>
       <ActionWrapper 
-        color={dominantColor}
         selectedColor={selectedColor}
         isPulsing={true}
         blurhash={gameData.nft.blurhash}
