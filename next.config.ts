@@ -6,7 +6,13 @@ const nextConfig = withPWA({
   skipWaiting: true,
   disable: process.env.NODE_ENV === 'development',
   runtimeCaching: [
-    // Add runtime caching strategies if needed
+    {
+      urlPattern: /^https:\/\/ui-explorations.*\.vercel\.app\/.*/,
+      handler: 'StaleWhileRevalidate',
+      options: {
+        cacheName: 'static-assets',
+      },
+    },
   ],
 })({
   images: {

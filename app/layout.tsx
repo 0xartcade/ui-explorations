@@ -49,6 +49,9 @@ export default function RootLayout({
     <html lang="en" className={`bg-black ${geistSans.variable} ${geistMono.variable}`}>
       <head>
         <title>{appName}</title>
+        <link rel="manifest" href="/manifest.json" />
+        <link rel="icon" href="/icons/0xArtcade-icon-lg.png" />
+        <link rel="apple-touch-icon" href="/icons/0xArtcade-icon-lg.png" />
       </head>
       <body className="font-sans bg-black text-white min-h-[-webkit-fill-available] overflow-y-auto">
         <div className="game-layout pwa-safe-area overflow-y-auto">
