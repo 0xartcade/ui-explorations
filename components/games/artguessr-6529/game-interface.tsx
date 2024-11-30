@@ -140,9 +140,9 @@ export default function GameInterface() {
             : undefined
         }
       >
-        <div className="game-layout flex flex-col h-full">
+        <div className="game-layout">
           {/* IMAGE CONTAINER */}
-          <div className="image-area glass-panel relative w-full h-[45%] overflow-hiddenmt-2 md:mt-0">
+          <div className="image-area glass-panel relative w-full h-[40vh] md:h-[45%] overflow-hidden">
             <div className="absolute inset-1 md:rounded-2xl overflow-hidden">
               <NFTImage
                 src={gameData.nft.image_url}
@@ -152,7 +152,7 @@ export default function GameInterface() {
           </div>
 
           {/* GUESS CONTAINER */}
-          <div className="guess-container flex-1 flex flex-col pt-2 min-h-0 overflow-hidden"> 
+          <div className="guess-container flex-1 flex flex-col pt-2 overflow-y-auto"> 
             <GuessingInterface
               tags={gameData.tags}
               selectedTags={selectedTags}
@@ -163,8 +163,8 @@ export default function GameInterface() {
             />
           </div>
 
-          {/* ACTION CONTAINER - adjusted margins and background */}
-          <div className="action-container bg-transparent px-2 py-2 backdrop-blur-sm">
+          {/* ACTION CONTAINER */}
+          <div className="action-container">
             <ActionButton
               gameState={gameState}
               onClick={handleSubmit}

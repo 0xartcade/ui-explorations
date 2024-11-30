@@ -20,8 +20,8 @@ export function GameArea() {
         </Card>
       </div>
 
-      {/* Mobile view (full screen) */}
-      <div className="block md:hidden w-full h-screen artcade-mobile-container">
+      {/* Mobile view - simplified */}
+      <div className="block md:hidden w-full h-screen bg-black">
         <GameComponent />
       </div>
     </div>

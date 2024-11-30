@@ -70,7 +70,7 @@ export function GuessingInterface({
               (!selectedTags[tag.criteria]) && (
                 <motion.button
                   key={tag.id}
-                  className="px-2 py-1 rounded-full font-semibold relative overflow-hidden tag-button hover:scale-105 bg-tint-black/35 backdrop-blur-2xl border border-white/10 text-xs md:text-xs"
+                  className="px-2 py-1 rounded-full font-semibold relative overflow-hidden tag-button hover:scale-105 bg-tint-black/35 backdrop-blur-2xl border border-white/10 text-xs md:text-s"
                   style={{
                     color: getQuestionColor(tag.criteria),
                     borderColor: getQuestionColor(tag.criteria),
