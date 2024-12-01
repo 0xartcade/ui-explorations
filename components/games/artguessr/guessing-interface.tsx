@@ -5,6 +5,9 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { X } from 'lucide-react'
 import { GAME_CONFIG, getQuestionColor } from './game-config'
 import { Tag, Criteria, GameState } from '../../../types/game-types'
+import React from 'react'
+import { calculateScore } from './game-utils'
+import { ScoreDisplay } from './score-display'
 
 const HOVER_GRADIENT = `
   linear-gradient(
@@ -23,9 +26,11 @@ interface GuessingInterfaceProps {
   onTagClick: (tag: Tag) => void
   onReset: (criteria: Criteria) => void
   onCriteriaClick: (criteria: Criteria) => void
+  gameData: { tags: Tag[] } | null
+  timeElapsed: number
 }
 
-const truncateText = (text: string, limit: number = 22) => {
+const truncateText = (text: string, limit: number = 18) => {
   return text.length > limit ? text.slice(0, limit) + '...' : text;
 };
 
@@ -36,6 +41,8 @@ export function GuessingInterface({
   onTagClick,
   onReset,
   onCriteriaClick,
+  gameData,
+  timeElapsed,
 }: GuessingInterfaceProps): JSX.Element {
   const [focusedCriteria, setFocusedCriteria] = useState<Criteria | null>(null);
   const randomizedTags = useMemo(() => 
@@ -66,110 +73,24 @@ export function GuessingInterface({
     return randomizedTags.filter(tag => tag.criteria === focusedCriteria);
   }, [randomizedTags, focusedCriteria]);
 
+  const getDisplayValue = (criteria: Criteria) => {
+    const tag = selectedTags[criteria];
+    if (gameState === 'submitted' && !tag) {
+      return 'No Answer';
+    }
+    return tag?.value || '';
+  };
+
   return (
     <div className="artcade-guessing-layout flex flex-col h-full">
       <div className="options-area glass-panel flex-1 min-h-0 flex flex-wrap content-center gap-1.5 justify-center overflow-y-aut p-3 mb-2">
         {gameState === 'submitted' ? (
-          <div className="text-center text-white">
-            {!showResults ? (
-              <motion.div 
-                className="flex flex-col items-center"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-              >
-                <motion.p 
-                  className="text-xl font-orbitron tracking-[0.2em] mb-2 text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-400"
-                  animate={{
-                    textShadow: [
-                      "0 0 7px #fff",
-                      "0 0 10px #fff",
-                      "0 0 21px #fff",
-                      "0 0 42px rgb(147, 51, 234)",
-                      "0 0 82px rgb(147, 51, 234)",
-                      "0 0 92px rgb(147, 51, 234)",
-                    ]
-                  }}
-                  transition={{
-                    duration: 2,
-                    repeat: Infinity,
-                    repeatType: "reverse"
-                  }}
-                >
-                  CALCULATING
-                </motion.p>
-                <div className="flex gap-2 mt-1">
-                  {[0, 1, 2].map((i) => (
-                    <motion.div
-                      key={i}
-                      className="w-2.5 h-2.5 bg-gradient-to-r from-purple-400 to-pink-400"
-                      animate={{
-                        opacity: [0.2, 1, 0.2],
-                        scale: [0.8, 1, 0.8],
-                        boxShadow: [
-                          "0 0 5px rgba(147, 51, 234, 0.5)",
-                          "0 0 10px rgba(147, 51, 234, 0.8)",
-                          "0 0 5px rgba(147, 51, 234, 0.5)",
-                        ]
-                      }}
-                      transition={{
-                        duration: 0.8,
-                        repeat: Infinity,
-                        delay: i * 0.2,
-                        ease: "easeInOut"
-                      }}
-                    />
-                  ))}
-                </div>
-                <motion.div 
-                  className="mt-4 px-6 py-2 border border-purple-500/30 rounded-lg bg-purple-900/10 backdrop-blur"
-                  animate={{
-                    boxShadow: [
-                      "0 0 5px rgba(147, 51, 234, 0.2)",
-                      "0 0 10px rgba(147, 51, 234, 0.4)",
-                      "0 0 5px rgba(147, 51, 234, 0.2)",
-                    ]
-                  }}
-                  transition={{
-                    duration: 1.5,
-                    repeat: Infinity,
-                    repeatType: "reverse"
-                  }}
-                >
-                  <motion.div
-                    className="font-orbitron text-2xl tracking-widest bg-gradient-to-r from-purple-400 to-pink-400 text-transparent bg-clip-text"
-                    animate={{
-                      opacity: [1, 0.5],
-                      textShadow: [
-                        "0 0 5px rgba(147, 51, 234, 0.5)",
-                        "0 0 10px rgba(147, 51, 234, 0.8)",
-                        "0 0 5px rgba(147, 51, 234, 0.5)",
-                      ]
-                    }}
-                    transition={{
-                      duration: 0.8,
-                      repeat: Infinity,
-                      repeatType: "reverse",
-                      ease: "easeInOut"
-                    }}
-                  >
-                    SCORE: --/4
-                  </motion.div>
-                </motion.div>
-              </motion.div>
-            ) : (
-              <motion.div
-                initial={{ opacity: 0, scale: 0.9 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 0.3 }}
-                className="font-orbitron"
-              >
-                <p className="text-xl font-bold mb-2">Your Score</p>
-                <p className="text-3xl font-bold">
-                  {Object.values(selectedTags).filter((tag) => tag?.isCorrect).length} / {GAME_CONFIG.questions.length}
-                </p>
-              </motion.div>
-            )}
-          </div>
+          <ScoreDisplay 
+            correctCount={Object.values(selectedTags).filter((tag) => tag?.isCorrect).length}
+            timeLeft={30 - timeElapsed}
+            showResults={showResults}
+            totalQuestions={GAME_CONFIG.questions.length}
+          />
         ) : (
           <AnimatePresence>
             {visibleTags.map((tag: Tag) => (
@@ -275,14 +196,34 @@ export function GuessingInterface({
                     initial={{ opacity: 0, scale: 0.8 }}
                     animate={{ opacity: 1, scale: 1 }}
                     exit={{ opacity: 0, scale: 0.8 }}
-                    className="answer-text w-full h-full flex items-center justify-center"
+                    className="answer-text w-full h-full flex items-center justify-center group"
+                    style={{
+                      backgroundColor: gameState === 'submitted' ? 'rgba(239, 68, 68, 0.4)' : 'transparent'
+                    }}
                   >
                     <span
-                      className="answer-text text-lg md:text-sm font-semibold opacity-1 text-center px-1 uppercase"
-                      style={{ color: question.color }}
+                      className={`
+                        answer-text text-sm md:text-xs font-semibold text-center px-1 uppercase
+                        transition-opacity duration-200
+                        ${gameState === 'submitted' ? 'text-white group-hover:opacity-0' : ''}
+                      `}
+                      style={{ color: gameState === 'submitted' ? 'white' : question.color }}
                     >
-                      {question.label}
+                      {gameState === 'submitted' ? 'No Answer' : question.label}
                     </span>
+
+                    {gameState === 'submitted' && (
+                      <span className="
+                        transition-opacity duration-200 absolute inset-0 
+                        flex items-center justify-center
+                        opacity-0 group-hover:opacity-100
+                        text-sm md:text-xs font-semibold text-white
+                      ">
+                        {truncateText(gameData?.tags.find((t: Tag) => 
+                          t.criteria === question.id && t.isCorrect
+                        )?.value || '')}
+                      </span>
+                    )}
                   </motion.div>
                 )}
               </AnimatePresence>

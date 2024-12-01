@@ -7,7 +7,9 @@ export function GameArea() {
   const activeGameType = GAME_TYPES[ACTIVE_GAME.type];
   
   // Dynamic import of the game component
-  const GameComponent = dynamic(() => import(`@/components/${activeGameType.path}`))
+  const GameComponent = dynamic(() => import(`@/components/${activeGameType.path}`), {
+    loading: () => <div className="w-full h-full bg-black" />
+  })
 
   return (
     <div className="w-full h-full artcade-area">

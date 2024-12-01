@@ -13,6 +13,8 @@ import { GAME_CONFIG } from './game-config'
 import { ActionWrapper } from './action-wrapper'
 import { FullScreenImage } from './full-screen-image'
 import Head from 'next/head'
+import { GameTimer } from './game-timer'
+import { StartScreen } from './start-screen'
 
 function transformToFullGameData(data: TemplateGameData): GameData {
   const titles = [...new Set(data.raw_data.map(nft => nft.questions.title))]
@@ -34,7 +36,7 @@ export default function GameInterface() {
     nft: NFTMetadata;
     tags: Tag[];
   } | null>(null);
-  const [gameState, setGameState] = useState<GameState>('playing');
+  const [gameState, setGameState] = useState<GameState>('start');
   const [selectedTags, setSelectedTags] = useState<Record<Criteria, Tag | null>>(
     Object.fromEntries(
       GAME_CONFIG.questions.map(q => [q.id, null])
@@ -42,6 +44,7 @@ export default function GameInterface() {
   );
   const [selectedColor, setSelectedColor] = useState<string | null>(null);
   const [isFullScreen, setIsFullScreen] = useState(false)
+  const [elapsedTime, setElapsedTime] = useState<number>(0);
 
   useEffect(() => {
     fetchGameData(ACTIVE_GAME.mode)
@@ -89,6 +92,12 @@ export default function GameInterface() {
     }
   };
 
+  const handleTimeout = () => {
+    if (gameState === 'playing') {
+      handleSubmit();
+    }
+  };
+
   const handleReset = (criteria: Criteria) => {
     if (!gameData) return;
     
@@ -111,6 +120,14 @@ export default function GameInterface() {
       setSelectedTags((prev) => ({ ...prev, [criteria]: null }))
     }
   }
+
+  const handleStartGame = () => {
+    setGameState('playing');
+  };
+
+  const handleTimeUpdate = (seconds: number) => {
+    setElapsedTime(seconds);
+  };
 
   const imageLayoutId = `nft-image-${gameData?.nft.token_id}`
 
@@ -140,45 +157,60 @@ export default function GameInterface() {
                   total: GAME_CONFIG.questions.length,
                   answers: GAME_CONFIG.questions.map(question => 
                     selectedTags[question.id]?.isCorrect ?? false
-                  )
+                  ),
+                  timeElapsed: elapsedTime
                 }
               : undefined
           }
         >
-          <div className="game-layout">
-            {/* IMAGE CONTAINER */}
-            <div className="image-area glass-panel relative w-full h-[40vh] md:h-[45%] overflow-hidden">
-              <div className="absolute inset-1 md:rounded-2xl overflow-hidden">
-                <NFTImage
-                  src={gameData.nft.image_url}
-                  alt={gameData.nft.questions.title}
-                  onImageClick={() => setIsFullScreen(true)}
-                  layoutId={imageLayoutId}
-                />
+          {gameState === 'start' ? (
+            <StartScreen onStartGame={handleStartGame} />
+          ) : (
+            <>
+              <GameTimer 
+                isActive={gameState === 'playing'}
+                onTimeUpdate={handleTimeUpdate}
+                onTimeout={handleTimeout}
+                gameState={gameState}
+              />
+              <div className="game-layout">
+                {/* IMAGE CONTAINER */}
+                <div className="image-area glass-panel relative w-full h-[40vh] md:h-[45%] overflow-hidden">
+                  <div className="absolute inset-1 md:rounded-2xl overflow-hidden">
+                    <NFTImage
+                      src={gameData.nft.image_url}
+                      alt={gameData.nft.questions.title}
+                      onImageClick={() => setIsFullScreen(true)}
+                      layoutId={imageLayoutId}
+                    />
+                  </div>
+                </div>
+
+                {/* GUESS CONTAINER */}
+                <div className="guess-container flex-1 flex flex-col pt-2 overflow-y-auto"> 
+                  <GuessingInterface
+                    tags={gameData.tags}
+                    selectedTags={selectedTags}
+                    gameState={gameState}
+                    onTagClick={handleTagClick}
+                    onReset={handleReset}
+                    onCriteriaClick={handleCriteriaClick}
+                    gameData={gameData}
+                    timeElapsed={elapsedTime}
+                  />
+                </div>
+
+                {/* ACTION CONTAINER */}
+                <div className="action-container p-3">
+                  <ActionButton
+                    gameState={gameState}
+                    onClick={handleSubmit}
+                    disabled={false}
+                  />
+                </div>
               </div>
-            </div>
-
-            {/* GUESS CONTAINER */}
-            <div className="guess-container flex-1 flex flex-col pt-2 overflow-y-auto"> 
-              <GuessingInterface
-                tags={gameData.tags}
-                selectedTags={selectedTags}
-                gameState={gameState}
-                onTagClick={handleTagClick}
-                onReset={handleReset}
-                onCriteriaClick={handleCriteriaClick}
-              />
-            </div>
-
-            {/* ACTION CONTAINER */}
-            <div className="action-container p-3">
-              <ActionButton
-                gameState={gameState}
-                onClick={handleSubmit}
-                disabled={gameState === 'playing' && Object.values(selectedTags).some((value) => value === null)}
-              />
-            </div>
-          </div>
+            </>
+          )}
         </ActionWrapper>
 
         <FullScreenImage

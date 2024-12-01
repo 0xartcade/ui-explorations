@@ -211,3 +211,46 @@ body {
   height: auto;
   object-fit: contain;
 }
+
+/* Add these styles */
+.artcade-phone-content {
+  position: relative;
+}
+
+.artcade-game-container {
+  position: relative;
+}
+
+/* Timer positioning */
+@media (min-width: 768px) {
+  .game-timer {
+    position: absolute;
+    top: 25px;
+    left: calc(50% - 26px);
+    width: 52px;
+    margin: 0 auto;
+    z-index: 50;
+  }
+}
+
+@media (max-width: 767px) {
+  .game-timer {
+    position: fixed;
+    top: 50px;
+    left: calc(50% - 26px);
+    width: 52px;
+    margin: 0 auto;
+    z-index: 50;
+  }
+}
+
+/* Adjusted glass panel */
+.glass-panel-light {
+  @apply rounded-2xl
+         bg-neutral-900/30
+         backdrop-blur-[2px]
+         ring-1
+         ring-white/5
+         border-white/5
+         shadow-glass;
+}

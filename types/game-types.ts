@@ -31,4 +31,11 @@ export interface Tag {
   correctAnswer?: string
 }
 
-export type GameState = 'playing' | 'submitted' | 'nextRound'
+export type GameState = 'start' | 'playing' | 'submitted' | 'nextRound'
+
+export interface GameScore {
+  correct: number
+  total: number
+  answers: boolean[]
+  timeElapsed: number
+}
