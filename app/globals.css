@@ -14,6 +14,16 @@
   --sat: env(safe-area-inset-top);
   --sar: env(safe-area-inset-right);
   --sal: env(safe-area-inset-left);
+  --unicorn-pink: #FF69B4;
+  --unicorn-purple: #9B6DFF;
+  --unicorn-blue: #87CEEB;
+  --unicorn-yellow: #FFD700;
+  --unicorn-mint: #98FF98;
+  --unicorn-pink-faded: rgba(255, 105, 180, 0.7);
+  --unicorn-purple-faded: rgba(155, 109, 255, 0.7);
+  --unicorn-blue-faded: rgba(135, 206, 235, 0.7);
+  --unicorn-yellow-faded: rgba(255, 215, 0, 0.7);
+  --unicorn-mint-faded: rgba(152, 255, 152, 0.7);
 }
 
 /* Ensure html, body, and #__next take full height */
@@ -157,7 +167,7 @@ body {
 @layer components {
   .glass-panel {
     @apply rounded-2xl
-           bg-neutral-900/50 
+           bg-neutral-900/30 
            backdrop-blur-2xl
            ring-1
            ring-white/10
@@ -210,4 +220,17 @@ body {
   width: auto;
   height: auto;
   object-fit: contain;
+}
+
+.unicorn-glow {
+  animation: rainbow 8s linear infinite;
+  filter: drop-shadow(0 0 15px var(--unicorn-pink));
+}
+
+@keyframes rainbow {
+  0% { filter: drop-shadow(0 0 15px var(--unicorn-pink)); }
+  25% { filter: drop-shadow(0 0 15px var(--unicorn-purple)); }
+  50% { filter: drop-shadow(0 0 15px var(--unicorn-blue)); }
+  75% { filter: drop-shadow(0 0 15px var(--unicorn-yellow)); }
+  100% { filter: drop-shadow(0 0 15px var(--unicorn-pink)); }
 }

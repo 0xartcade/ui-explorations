@@ -35,6 +35,7 @@ export const GAME_MODES: Record<string, GameMode> = {
       name: 'Template Mode',
       description: 'This is a template for creating new game modes in the 0xArtcade ecosystem. To use, simply add your game to the components/games directory and updates game-registery.ts with the path and game data'
     }
+
   } as const
   
 // Type helpers

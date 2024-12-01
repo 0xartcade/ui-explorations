@@ -1,6 +1,6 @@
 "use client"
 
-import { Button } from "@/components/ui/button"
+import { UnicornButton } from "@/components/ui/unicorn-button"
 
 interface ActionButtonProps {
   gameState: 'playing' | 'submitted' | 'nextRound'
@@ -8,21 +8,15 @@ interface ActionButtonProps {
   disabled: boolean
 }
 
-export function ActionButton({ gameState, onClick, disabled }: ActionButtonProps): JSX.Element {
+export function ActionButton({ gameState, onClick, disabled }: ActionButtonProps) {
   return (
-    <Button
-      className="w-full bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white border-2 border-white/20 shadow-lg font-['Orbitron'] font-bold text-sm md:text-base retro-button"
-      style={{ 
-        borderRadius: '15px 15px 15px 15px',
-        minHeight: '2.5rem',
-        padding: '.5rem',
-        fontSize: '0.875rem'
-      }}
+    <UnicornButton
       onClick={onClick}
       disabled={disabled}
+      className="w-full min-h-[2.5rem] text-sm md:text-base rounded-2xl"
     >
-      {gameState === 'playing' ? 'Submit Guess' : 'Next Round'}
-    </Button>
+      {gameState === 'playing' ? '🦄 Submit Guess' : '✨ Next Round'}
+    </UnicornButton>
   )
 }
 

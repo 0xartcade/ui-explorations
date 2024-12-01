@@ -29,6 +29,19 @@ const truncateText = (text: string, limit: number = 22) => {
   return text.length > limit ? text.slice(0, limit) + '...' : text;
 };
 
+const getTagStyle = (criteria: Criteria) => {
+  const baseStyles = "px-3 py-1 rounded-full font-semibold relative overflow-hidden tag-button hover:scale-105 backdrop-blur-2xl border text-sm md:text-xs transition-all duration-300"
+  
+  const colors = {
+    'TOTAL SUPPLY': 'bg-unicorn-pink/20 border-unicorn-pink text-unicorn-pink hover:bg-unicorn-pink/30',
+    'SEASON': 'bg-unicorn-purple/20 border-unicorn-purple text-unicorn-purple hover:bg-unicorn-purple/30',
+    'ARTIST NAME': 'bg-unicorn-blue/20 border-unicorn-blue text-unicorn-blue hover:bg-unicorn-blue/30',
+    'ART NAME': 'bg-unicorn-yellow/20 border-unicorn-yellow text-unicorn-yellow hover:bg-unicorn-yellow/30'
+  }
+
+  return `${baseStyles} ${colors[criteria]}`
+}
+
 export function GuessingInterface({
   tags,
   selectedTags,
@@ -70,7 +83,7 @@ export function GuessingInterface({
               (!selectedTags[tag.criteria]) && (
                 <motion.button
                   key={tag.id}
-                  className="px-3 py-1 rounded-full font-semibold relative overflow-hidden tag-button hover:scale-105 bg-tint-black/35 backdrop-blur-2xl border border-white/10 text-sm md:text-xs"
+                  className={getTagStyle(tag.criteria)}
                   style={{
                     color: getQuestionColor(tag.criteria),
                     borderColor: getQuestionColor(tag.criteria),

@@ -38,7 +38,7 @@ export function FullScreenImage({ src, alt, isOpen, onClose, layoutId }: FullScr
         >
           <motion.div 
             layoutId={layoutId}
-            className="relative w-full h-full p-2"
+            className="relative w-full h-full p-1"
             transition={{ 
               type: "tween",
               duration: 0.3,
@@ -53,10 +53,10 @@ export function FullScreenImage({ src, alt, isOpen, onClose, layoutId }: FullScr
                 exit={{ scale: 0.95, opacity: 0 }}
                 transition={{ duration: 0.2 }}
                 style={{ 
-                  width: '95%',
-                  height: '95%',
+                  width: '98%',
+                  height: '98%',
                   maxWidth: '100%',
-                  maxHeight: '95vh',
+                  maxHeight: '98vh',
                 }}
               >
                 <Image

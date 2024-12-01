@@ -60,10 +60,19 @@ export default {
   			tint: {
   				white: 'rgba(255, 255, 255, var(--tw-bg-opacity))',
   				black: 'rgba(0, 0, 0, var(--tw-bg-opacity))',
+  			},
+  			unicorn: {
+  				pink: '#FF69B4',
+  				purple: '#9B6DFF',
+  				blue: '#87CEEB',
+  				yellow: '#FFD700',
+  				mint: '#98FF98'
   			}
   		},
   		backgroundImage: {
   			'primary-gradient': 'linear-gradient(180deg, #52DBFF 22%, #7637FE 52.5%, #FF3DDC 73.49%)',
+  			'unicorn-gradient': 'linear-gradient(45deg, #FF69B4 0%, #9B6DFF 25%, #87CEEB 50%, #FFD700 75%, #98FF98 100%)',
+  			'unicorn-shimmer': 'linear-gradient(to right, transparent, rgba(255,255,255,0.2), transparent)'
   		},
   		borderRadius: {
   			lg: 'var(--radius)',
@@ -92,6 +101,20 @@ export default {
   		boxShadow: {
   			'glass': '0 0 10px 0 rgba(255, 255, 255, 0.1)',
   		},
+  		animation: {
+  			'shimmer': 'shimmer 2s linear infinite',
+  			'rainbow': 'rainbow 8s linear infinite'
+  		},
+  		keyframes: {
+  			shimmer: {
+  				'0%': { transform: 'translateX(-100%)' },
+  				'100%': { transform: 'translateX(100%)' }
+  			},
+  			rainbow: {
+  				'0%': { filter: 'hue-rotate(0deg)' },
+  				'100%': { filter: 'hue-rotate(360deg)' }
+  			}
+  		}
   	}
   },
   plugins: [require("tailwindcss-animate")],
