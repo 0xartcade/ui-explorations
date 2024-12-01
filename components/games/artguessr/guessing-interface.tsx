@@ -6,7 +6,6 @@ import { X } from 'lucide-react'
 import { GAME_CONFIG, getQuestionColor } from './game-config'
 import { Tag, Criteria, GameState } from '../../../types/game-types'
 import React from 'react'
-import { calculateScore } from './game-utils'
 import { ScoreDisplay } from './score-display'
 
 const HOVER_GRADIENT = `
@@ -72,14 +71,6 @@ export function GuessingInterface({
     if (!focusedCriteria) return randomizedTags;
     return randomizedTags.filter(tag => tag.criteria === focusedCriteria);
   }, [randomizedTags, focusedCriteria]);
-
-  const getDisplayValue = (criteria: Criteria) => {
-    const tag = selectedTags[criteria];
-    if (gameState === 'submitted' && !tag) {
-      return 'No Answer';
-    }
-    return tag?.value || '';
-  };
 
   return (
     <div className="artcade-guessing-layout flex flex-col h-full">
