@@ -171,7 +171,7 @@ export default function GameInterface() {
             </div>
 
             {/* ACTION CONTAINER */}
-            <div className="action-container pt-3 px-6 pb-1">
+            <div className="action-container p-3">
               <ActionButton
                 gameState={gameState}
                 onClick={handleSubmit}

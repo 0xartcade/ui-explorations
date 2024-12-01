@@ -75,6 +75,7 @@ export default {
   			monoton: ['Monoton', 'cursive'],
   			sans: ['var(--font-geist-sans)', 'system-ui'],
   			mono: ['var(--font-geist-mono)', 'monospace'],
+  			orbitron: ['Orbitron', 'sans-serif'],
   		},
   		backdropBlur: {
   			'xs': '2px',

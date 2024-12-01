@@ -82,7 +82,7 @@ export function ActionWrapper({
   };
 
   return (
-    <div className="relative flex flex-col h-full px-1.5 pt-6 pb-4 action-wrapper">
+    <div className="relative flex flex-col h-full px-1.5 pt-7 action-wrapper">
       <div className="absolute inset-0 md:inset-0 md:top-0 -top-[env(safe-area-inset-top)] overflow-hidden">
         {/* Blurred background image */}
         <div className="absolute inset-0 scale-110">
