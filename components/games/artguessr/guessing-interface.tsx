@@ -77,6 +77,7 @@ export function GuessingInterface({
       <div className="options-area glass-panel flex-1 min-h-0 flex flex-wrap content-center gap-1.5 justify-center overflow-y-aut p-3 mb-2">
         {gameState === 'submitted' ? (
           <ScoreDisplay 
+            key={`score-${timeElapsed}-${Object.values(selectedTags).filter((tag) => tag?.isCorrect).length}`}
             correctCount={Object.values(selectedTags).filter((tag) => tag?.isCorrect).length}
             timeLeft={30 - timeElapsed}
             showResults={showResults}
