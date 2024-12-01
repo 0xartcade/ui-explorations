@@ -7,12 +7,6 @@ export default function Home() {
   const activeGameType = GAME_TYPES[ACTIVE_GAME.type];
   const activeGameMode = GAME_MODES[ACTIVE_GAME.mode];
   
-  const appName = process.env.NODE_ENV === 'development'
-    ? '0xArtcade (Local)'
-    : process.env.VERCEL_ENV === 'production'
-    ? '0xArtcade'
-    : `0xArtcade (${process.env.VERCEL_GIT_COMMIT_REF || 'Preview'})`;
-
   return (
     <main className="flex min-h-screen bg-black artcade-main">
       {/* Environment Indicator */}
