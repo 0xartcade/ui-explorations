@@ -94,3 +94,15 @@ export function generateGameData(gameData: GameData): { nft: NFTMetadata; tags: 
 
   return { nft: correctNFT, tags };
 }
+
+export function calculateScore(correctAnswers: number, timeLeft: number) {
+  const basePoints = correctAnswers * 50;
+  const timeMultiplier = timeLeft;
+  const totalPoints = basePoints * timeMultiplier;
+  
+  return {
+    basePoints,
+    timeMultiplier,
+    totalPoints
+  };
+}

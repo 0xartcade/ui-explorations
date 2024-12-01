@@ -2,19 +2,16 @@
 
 import { motion } from 'framer-motion'
 import Image from 'next/image'
+import { GameState, GameScore } from '@/types/game-types'
 
 interface ActionWrapperProps {
   children: React.ReactNode
   selectedColor: string | null
-  isPulsing: boolean
+  isPulsing?: boolean
   blurhash?: string
   imageUrl?: string
-  gameState: 'playing' | 'submitted' | 'nextRound'
-  score?: {
-    correct: number
-    total: number
-    answers: boolean[]
-  }
+  gameState: GameState
+  score?: GameScore
 }
 
 export function ActionWrapper({
@@ -58,7 +55,7 @@ export function ActionWrapper({
 
         {/* Updated score grid overlay */}
         <motion.div 
-          className="absolute inset-0 pointer-events-none grid grid-cols-2 grid-rows-2 gap-2 py-2 p-1"
+          className="absolute inset-0 pointer-events-none grid grid-cols-2 grid-rows-2 gap-0"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 2.0, duration: 0.3 }}
@@ -66,11 +63,16 @@ export function ActionWrapper({
           {Object.values(score?.answers || {}).map((isCorrect: boolean, index: number) => (
             <motion.div
               key={index}
-              className={`${
-                isCorrect 
+              className={`
+                ${isCorrect 
                   ? 'bg-green-500/25 border border-green-500/30' 
                   : 'bg-red-500/25 border border-red-500/30'
-              } rounded-[40px]`}
+                }
+                ${index === 0 ? 'rounded-tl-[40px]' : ''}
+                ${index === 1 ? 'rounded-tr-[40px]' : ''}
+                ${index === 2 ? 'rounded-bl-[40px]' : ''}
+                ${index === 3 ? 'rounded-br-[40px]' : ''}
+              `}
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 2.0 + (index * 0.1) }}
@@ -84,13 +86,13 @@ export function ActionWrapper({
   return (
     <div className="relative flex flex-col h-full px-1.5 pt-7 action-wrapper">
       <div className="absolute inset-0 md:inset-0 md:top-0 -top-[env(safe-area-inset-top)] overflow-hidden">
-        {/* Blurred background image */}
-        <div className="absolute inset-0 scale-110">
+        {/* Blurred background image - add opacity transition */}
+        <div className={`absolute inset-0 scale-110 transition-opacity duration-500 ${gameState === 'submitted' ? 'opacity-25' : 'opacity-50'}`}>
           <Image
             src={imageUrl || ''}
             alt="Background"
             fill
-            className="object-cover blur-lg opacity-50"
+            className="object-cover blur-lg"
             quality={1}
             priority={false}
             unoptimized={imageUrl?.includes('googleusercontent.com')}
