@@ -56,7 +56,7 @@ export function GuessingInterface({
 
   return (
     <div className="artcade-guessing-layout flex flex-col h-full">
-      <div className="options-area glass-panel flex-1 min-h-0 flex flex-wrap content-center gap-1 justify-center overflow-y-aut p-3 mb-2">
+      <div className="options-area glass-panel flex-1 min-h-0 flex flex-wrap content-center gap-1.5 justify-center overflow-y-aut p-3 mb-2">
         {gameState === 'submitted' ? (
           <div className="text-center text-white">
             <p className="text-xl font-bold mb-2">Your Score</p>
@@ -117,7 +117,7 @@ export function GuessingInterface({
                     initial={{ opacity: 0, scale: 0.8 }}
                     animate={{ opacity: 1, scale: 1 }}
                     exit={{ opacity: 0, scale: 0.8 }}
-                    className="answer-text w-full h-full flex items-center justify-center px-2 py-1 rounded-lg text-xs md:text-xs font-semibold uppercase relative truncate"
+                    className="answer-text w-full h-full flex items-center justify-center px-2 py-1 rounded-lg text-sm md:text-xs font-semibold uppercase relative truncate"
                     style={{
                       backgroundColor: gameState === 'submitted'
                         ? selectedTags[question.id]?.isCorrect
@@ -151,7 +151,7 @@ export function GuessingInterface({
                     className="answer-text w-full h-full flex items-center justify-center"
                   >
                     <span
-                      className="answer-text text-lg md:text-xs font-semibold opacity-1 text-center px-1 uppercase"
+                      className="answer-text text-lg md:text-sm font-semibold opacity-1 text-center px-1 uppercase"
                       style={{ color: question.color }}
                     >
                       {question.label}
