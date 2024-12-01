@@ -11,6 +11,7 @@ import { GameData as TemplateGameData } from '../game-template/game-types'
 import { GameData, NFTMetadata, Tag, Criteria, GameState } from '@/types/game-types'
 import { GAME_CONFIG } from './game-config'
 import { ActionWrapper } from './action-wrapper'
+import { FullScreenImage } from './full-screen-image'
 import Head from 'next/head'
 
 function transformToFullGameData(data: TemplateGameData): GameData {
@@ -40,6 +41,7 @@ export default function GameInterface() {
     ) as Record<Criteria, Tag | null>
   );
   const [selectedColor, setSelectedColor] = useState<string | null>(null);
+  const [isFullScreen, setIsFullScreen] = useState(false)
 
   useEffect(() => {
     fetchGameData(ACTIVE_GAME.mode)
@@ -110,6 +112,8 @@ export default function GameInterface() {
     }
   }
 
+  const imageLayoutId = `nft-image-${gameData?.nft.token_id}`
+
   return gameData ? (
     <>
       <Head>
@@ -122,57 +126,69 @@ export default function GameInterface() {
           content="transparent" 
         />
       </Head>
-      <ActionWrapper 
-        selectedColor={selectedColor}
-        isPulsing={true}
-        blurhash={gameData.nft.blurhash}
-        imageUrl={gameData.nft.image_url}
-        gameState={gameState}
-        score={
-          gameState === 'submitted' 
-            ? {
-                correct: Object.values(selectedTags).filter((tag) => tag?.isCorrect).length,
-                total: GAME_CONFIG.questions.length,
-                answers: GAME_CONFIG.questions.map(question => 
-                  selectedTags[question.id]?.isCorrect ?? false
-                )
-              }
-            : undefined
-        }
-      >
-        <div className="game-layout">
-          {/* IMAGE CONTAINER */}
-          <div className="image-area glass-panel relative w-full h-[40vh] md:h-[45%] overflow-hidden">
-            <div className="absolute inset-1 md:rounded-2xl overflow-hidden">
-              <NFTImage
-                src={gameData.nft.image_url}
-                alt={gameData.nft.questions.title}
+      <div className="relative w-full h-full">
+        <ActionWrapper 
+          selectedColor={selectedColor}
+          isPulsing={true}
+          blurhash={gameData.nft.blurhash}
+          imageUrl={gameData.nft.image_url}
+          gameState={gameState}
+          score={
+            gameState === 'submitted' 
+              ? {
+                  correct: Object.values(selectedTags).filter((tag) => tag?.isCorrect).length,
+                  total: GAME_CONFIG.questions.length,
+                  answers: GAME_CONFIG.questions.map(question => 
+                    selectedTags[question.id]?.isCorrect ?? false
+                  )
+                }
+              : undefined
+          }
+        >
+          <div className="game-layout">
+            {/* IMAGE CONTAINER */}
+            <div className="image-area glass-panel relative w-full h-[40vh] md:h-[45%] overflow-hidden">
+              <div className="absolute inset-1 md:rounded-2xl overflow-hidden">
+                <NFTImage
+                  src={gameData.nft.image_url}
+                  alt={gameData.nft.questions.title}
+                  onImageClick={() => setIsFullScreen(true)}
+                  layoutId={imageLayoutId}
+                />
+              </div>
+            </div>
+
+            {/* GUESS CONTAINER */}
+            <div className="guess-container flex-1 flex flex-col pt-2 overflow-y-auto"> 
+              <GuessingInterface
+                tags={gameData.tags}
+                selectedTags={selectedTags}
+                gameState={gameState}
+                onTagClick={handleTagClick}
+                onReset={handleReset}
+                onCriteriaClick={handleCriteriaClick}
+              />
+            </div>
+
+            {/* ACTION CONTAINER */}
+            <div className="action-container pt-3 px-6 pb-1">
+              <ActionButton
+                gameState={gameState}
+                onClick={handleSubmit}
+                disabled={gameState === 'playing' && Object.values(selectedTags).some((value) => value === null)}
               />
             </div>
           </div>
+        </ActionWrapper>
 
-          {/* GUESS CONTAINER */}
-          <div className="guess-container flex-1 flex flex-col pt-2 overflow-y-auto"> 
-            <GuessingInterface
-              tags={gameData.tags}
-              selectedTags={selectedTags}
-              gameState={gameState}
-              onTagClick={handleTagClick}
-              onReset={handleReset}
-              onCriteriaClick={handleCriteriaClick}
-            />
-          </div>
-
-          {/* ACTION CONTAINER */}
-          <div className="action-container pt-3 px-6 pb-1">
-            <ActionButton
-              gameState={gameState}
-              onClick={handleSubmit}
-              disabled={gameState === 'playing' && Object.values(selectedTags).some((value) => value === null)}
-            />
-          </div>
-        </div>
-      </ActionWrapper>
+        <FullScreenImage
+          src={gameData.nft.image_url}
+          alt={gameData.nft.questions.title}
+          isOpen={isFullScreen}
+          onClose={() => setIsFullScreen(false)}
+          layoutId={imageLayoutId}
+        />
+      </div>
     </>
   ) : null;
 }
