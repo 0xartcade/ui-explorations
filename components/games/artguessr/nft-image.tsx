@@ -24,9 +24,9 @@ export function NFTImage({ src, alt, onImageClick, layoutId }: NFTImageProps): J
         boxShadow: "0px 5px 15px rgba(0,0,0,0.3)"
       }}
       transition={{ 
-        type: "spring",
-        stiffness: 200,
-        damping: 20
+        type: "tween",
+        duration: 0.3,
+        ease: "easeInOut"
       }}
     >
       <Image

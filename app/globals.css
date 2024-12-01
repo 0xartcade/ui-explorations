@@ -229,7 +229,7 @@ body {
     left: calc(50% - 26px);
     width: 52px;
     margin: 0 auto;
-    z-index: 50;
+    z-index: 150;
   }
 }
 
@@ -240,7 +240,7 @@ body {
     left: calc(50% - 26px);
     width: 52px;
     margin: 0 auto;
-    z-index: 50;
+    z-index: 150;
   }
 }
 
