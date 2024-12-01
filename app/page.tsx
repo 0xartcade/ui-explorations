@@ -6,9 +6,16 @@ import { ACTIVE_GAME } from "@/config/active-game";
 export default function Home() {
   const activeGameType = GAME_TYPES[ACTIVE_GAME.type];
   const activeGameMode = GAME_MODES[ACTIVE_GAME.mode];
-
+  
   return (
     <main className="flex min-h-screen bg-black artcade-main">
+      {/* Environment Indicator */}
+      <div className="fixed bottom-2 left-2 text-xs font-mono text-white/30 z-50">
+        {process.env.NODE_ENV === 'development' ? 'Local' : 
+         process.env.VERCEL_ENV === 'production' ? 'Prod' :
+         process.env.VERCEL_GIT_COMMIT_REF || 'Preview'}
+      </div>
+
       {/* INFORMATION SIDEBAR */}
       <aside 
         className="hidden md:flex md:w-1/2 flex-col items-center justify-center space-y-8 p-8 info-sidebar">
@@ -30,6 +37,16 @@ export default function Home() {
           <p className="text-white/80 text-base max-w-md leading-relaxed artcade-description">
             {activeGameMode.description}
           </p>
+          
+          {/* Website Link */}
+          <a 
+            href="https://www.0xartcade.xyz" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            className="block mt-8 text-sm font-mono text-white/40 hover:text-white/80 transition-colors duration-200"
+          >
+            www.0xartcade.xyz
+          </a>
         </div>
       </aside>
 
