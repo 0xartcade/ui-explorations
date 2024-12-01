@@ -58,7 +58,7 @@ export function ActionWrapper({
 
         {/* Updated score grid overlay */}
         <motion.div 
-          className="absolute inset-0 pointer-events-none grid grid-cols-2 grid-rows-2 gap-2 p-2"
+          className="absolute inset-0 pointer-events-none grid grid-cols-2 grid-rows-2 gap-2 py-2 p-1"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 2.0, duration: 0.3 }}
@@ -68,9 +68,9 @@ export function ActionWrapper({
               key={index}
               className={`${
                 isCorrect 
-                  ? 'bg-green-500/40 border-2 border-green-500/60' 
-                  : 'bg-red-500/40 border-2 border-red-500/60'
-              } rounded-xl`}
+                  ? 'bg-green-500/25 border border-green-500/30' 
+                  : 'bg-red-500/25 border border-red-500/30'
+              } rounded-[40px]`}
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 2.0 + (index * 0.1) }}
@@ -82,7 +82,7 @@ export function ActionWrapper({
   };
 
   return (
-    <div className="relative flex flex-col h-full px-1.5 pt-6 pb-4 action-wrapper">
+    <div className="relative flex flex-col h-full px-1.5 pt-7 action-wrapper">
       <div className="absolute inset-0 md:inset-0 md:top-0 -top-[env(safe-area-inset-top)] overflow-hidden">
         {/* Blurred background image */}
         <div className="absolute inset-0 scale-110">

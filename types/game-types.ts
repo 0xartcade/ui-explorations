@@ -25,9 +25,10 @@ export type Criteria = 'TOTAL SUPPLY' | 'SEASON' | 'ARTIST NAME' | 'ART NAME'
 
 export interface Tag {
   id: string
-  criteria: Criteria
   value: string
-  isCorrect: boolean
+  criteria: Criteria
+  isCorrect?: boolean
+  correctAnswer?: string
 }
 
 export type GameState = 'playing' | 'submitted' | 'nextRound'

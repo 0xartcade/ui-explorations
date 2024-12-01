@@ -28,7 +28,16 @@ export const GAME_CONFIG = {
         dataField: 'title',
         answersField: 'titles'
       }
-    ]
+    ],
+    
+    animations: {
+      submit: {
+        duration: 2.5,
+        gridDelay: 2.0,
+        answerRevealDelay: 2.0,
+        answerStaggerDelay: 0.1,
+      }
+    }
   } as const
   
   export type Question = typeof GAME_CONFIG.questions[number]

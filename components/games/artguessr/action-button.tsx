@@ -11,13 +11,7 @@ interface ActionButtonProps {
 export function ActionButton({ gameState, onClick, disabled }: ActionButtonProps): JSX.Element {
   return (
     <Button
-      className="w-full bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white border-2 border-white/20 shadow-lg font-['Orbitron'] font-bold text-sm md:text-base retro-button"
-      style={{ 
-        borderRadius: '15px 15px 15px 15px',
-        minHeight: '2.5rem',
-        padding: '.5rem',
-        fontSize: '0.875rem'
-      }}
+      className="w-full h-full bg-gradient-to-r from-artcade-purple to-artcade-pink hover:from-artcade-purple/80 hover:to-artcade-pink/80 text-white border-2 border-white/20 shadow-lg font-['Orbitron'] font-bold text-lg md:text-sm rounded-2xl retro-button"
       onClick={onClick}
       disabled={disabled}
     >

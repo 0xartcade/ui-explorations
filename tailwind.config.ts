@@ -70,14 +70,12 @@ export default {
   			md: 'calc(var(--radius) - 2px)',
   			sm: 'calc(var(--radius) - 4px)'
   		},
-  		fontSize: {
-  			'xs': ['.75rem', { lineHeight: '1.1rem' }],
-			'sm': ['1.1rem', { lineHeight: '1.1rem' }],
-  		},
+		
   		fontFamily: {
   			monoton: ['Monoton', 'cursive'],
   			sans: ['var(--font-geist-sans)', 'system-ui'],
   			mono: ['var(--font-geist-mono)', 'monospace'],
+  			orbitron: ['Orbitron', 'sans-serif'],
   		},
   		backdropBlur: {
   			'xs': '2px',
